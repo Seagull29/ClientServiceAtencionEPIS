@@ -1,0 +1,23 @@
+<div class="solicitudes-container">
+    <div class="solicitudes-container__enlace">
+        <a class="solicitudes-container__boton" href="/estudiante/nueva-solicitud">Redactar nueva solicitud</a>
+    </div>
+    
+    {{#each user.helpingQueries}}
+    <section class="solicitud">
+        <header class="solicitud__cabecera">
+            <h3 class="solicitud__titulo"><span class="solicitud__numero">#{{math @index "+" 1}} </span>{{Encabezado}}</h3>
+        </header>
+        <main class="solicitud__cuerpo">
+            <ul class="solicitud__atributos">
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Fecha: </span>{{Fecha}}</li>
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Estado: </span>{{Estado}}</li>
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Categoria: </span>{{Categoria}}</li>
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Tipo: </span>{{Tipo}}</li>
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Prioridad: </span>{{Prioridad}}</li>
+            </ul>
+            <a class="solicitud__boton" href="/estudiante/solicitud/detalles/{{Id}}">Detalles</a>
+        </main>
+    </section>
+    {{/each}}
+</div>

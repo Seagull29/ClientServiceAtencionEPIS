@@ -1,0 +1,89 @@
+<div class="filtro-container">
+    <div class="filtro__grupo">
+        <select name="prioridad" id="filtro-prioridad-tutoria">
+            <option selected disabled>Seleccione la prioridad</option>
+            {{#each prioridades}}
+            <option>{{Nombre}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="filtro__grupo">
+        <select name="tipo" id="filtro-tipo-tutoria">
+            <option selected disabled>Seleccione el tipo</option>
+            {{#each tipos}}
+            <option>{{Nombre}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="filtro__grupo">
+        <button class="filtro__boton" id="btnTutoriaEnviado">
+            <span>
+                <i></i>
+            </span>
+            <span class="filtro__nombre">Enviado</span>
+        </button>
+    </div>
+    <div class="filtro__grupo">
+        <button class="filtro__boton" id="btnTutoriaProceso">
+            <span>
+                <i></i>
+            </span>
+            <span class="filtro__nombre">En proceso</span>
+        </button>
+    </div>
+    <div class="filtro__grupo">
+        <button class="filtro__boton" id="btnTutoriaAtendido">
+            <span>
+                <i></i>
+            </span>
+            <span class="filtro__nombre">Atendido</span>
+        </button>
+    </div>
+</div>
+
+<section class="containerSeguimiento containerSeguimiento--admin">
+    <div>
+        <a href="/coorTutoria">Volver</a>
+    </div>
+    <header class="seguimiento">
+        <div class="seguimiento__cabecera">
+            <h2 class="seguimiento__encabezado">{{solicitud.Encabezado}}</h2>
+            <button class="seguimiento__btnCerrar">Cerrar</button>
+        </div>
+        <p class="seguimiento__descripcion">{{solicitud.Descripcion}}</p>
+        <div class="seguimiento__atributos">
+            <ul class="seguimiento__lista">
+                <li class="seguimiento__atributo">{{estudiante.CodigoUAC}}</li>
+                <li class="seguimiento__atributo">{{estudiante.Nombre}}</li>
+                <li class="seguimiento__atributo">{{estudiante.Apellidos}}</li>
+            </ul>
+            <ul class="seguimiento__lista">
+                <li class="seguimiento__atributo">{{solicitud.Fecha}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Estado}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Tipo}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
+                <li class="seguimiento__atributo">Archivo</li>
+            </ul>
+        </div>
+    </header>
+    {{#each mensajes}}
+    <main class="mensajes">
+        <span class="mensajes__fecha">{{Fecha}}</span>
+        <p class="mensajes__cuerpo">{{Cuerpo}}</p>
+        <button class="mensajes__archivo">
+            <a>Archivo</a>
+        </button>
+    </main>
+    {{/each}}
+    <form class="chat" method="post" action="/coorTutoria/solicitud/nuevo-mensaje" enctype="multipart/form-data">
+        <input type="hidden" name="solicitudId" value="{{solicitud.Id}}">
+        <input type="hidden" name="coordinacion" value="{{coordinacion}}">
+        <input class="chat__archivo" type="file" name="archivo-mensaje">
+        <textarea class="chat__entrada" name="mensaje">
+
+        </textarea>
+        <button class="chat__enviar">
+            Enviar
+        </button>
+    </form>
+</section>

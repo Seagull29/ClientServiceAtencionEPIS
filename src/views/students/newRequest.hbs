@@ -1,0 +1,32 @@
+<form action="/estudiante/crear-solicitud" method="post" enctype="multipart/form-data" class="nueva-solicitud">
+    <div>
+        <select name="categoria">
+            <option selected disabled>Seleccione la categoria</option>
+            {{#each categorias}}
+            <option>{{Nombre}}</option>
+            {{/each}}
+        </select>
+        <select name="tipo">
+            <option selected disabled >Seleccione el tipo</option>
+            {{#each tipos}}
+            <option>{{Nombre}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div>
+        <div>
+            <input type="text" name="encabezado" placeholder=" ">
+            <label for="encabezado">Encabezado:</label>
+            <span></span>
+        </div>
+        <div>
+            <textarea name="descripcion"></textarea>
+            <label for="descripcion">Descripcion:</label>
+            <span></span>
+        </div>
+        <div>
+            <input type="file" name="archivos">
+        </div>
+        <button>Enviar Solicitud</button>
+    </div>
+</form>

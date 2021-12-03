@@ -1,0 +1,19 @@
+<header class="header">
+    <nav class="navbar">
+        <a class="navbar__logo" href="#">Logo</a>
+        <ul class="navbar__menu">
+            <li class="navbar__item"><a class="navbar__link" href="#">Preguntas Frecuentes</a></li>
+
+            {{#if user}}
+
+            <li class="navbar__item"><a class="navbar__link" href="/estudiante">{{user.name}}</a></li>
+            <li class="navbar__item"><a class="navbar__link" href="/logout">Cerrar sesión</a></li>
+
+            {{/if}}
+
+
+        </ul>
+    </nav>
+
+
+</header>

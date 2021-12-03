@@ -1,0 +1,251 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fefff8;
+    
+    background-size: 28px 28px;
+    background-image:  repeating-linear-gradient(to right, #e9eaff, #e9eaff 1.4000000000000001px, #fefff8 1.4000000000000001px, #fefff8);
+}
+
+.main {
+    font-family: 'Times New Roman' Times serif;
+    padding: 90px 40px 0;
+    
+    /*gap: 1em;
+    display:flex;
+    justify-content: center;*/
+}
+
+.header {
+    background-color: #283593;
+    height:80px;
+    position: fixed;
+    width: 100%;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    /*max-width: 992px;*/
+}
+
+.navbar__menu {
+    display: flex;
+    margin-right: 40px;
+    list-style: none;
+    text-transform: uppercase;
+    width: max-content;
+}
+
+
+.navbar__item {
+    font-size: 18px;
+    margin: 0 10px;
+    line-height: 80px;
+}
+
+.navbar__link {
+    color: white;
+    text-decoration: none; 
+    padding: 8px 12px;
+    border-radius: 3px;
+}
+
+.navbar__link:hover {
+    background-color: #001064;
+    transition: 0.5s;
+}
+
+.navbar__logo {
+    font-size:30px;
+    font-weight: bold;
+    padding: 0 50px;
+    line-height: 80px;
+}
+
+
+.solicitudes-container {
+    margin: auto;
+    display: flex;
+    /*grid-template-columns: repeat(7, 1fr);*/
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    max-width: 100%;
+    border-radius: 3px;
+    border-color: #001064;
+    border: 1px solid;
+    padding: 1em 1em;
+    min-height: 80%;
+}
+
+.solicitudes-container--admin {
+    margin-left: 250px;
+}
+
+.solicitud {
+    background-color: #e8eaf6;
+    padding: 15px;
+    border: 1.3px solid;
+    border-radius: 15px;
+    border-color: #009688;
+    height: max-content;
+
+}
+
+.solicitudes-container__enlace {
+    grid-column: 1 / span 7;
+    width: 100%;
+}
+
+.solicitudes-container__boton {
+    text-decoration: none;
+}
+
+.solicitud__boton {
+    text-decoration: none;
+}
+
+
+/*Barra laterial  que contiene los filtros*/
+.filtro-container {
+    padding: 20px;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 3px;
+    height: 70%;
+    position: fixed;
+    width: 230px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: space-evenly;
+
+}
+
+.filtro__grupo {
+    margin: auto;
+    list-style: none;
+    
+}
+
+/*-----------------------------------------*/
+
+
+/*Footer*/
+.footer {
+    
+    background-color: #283593;
+    width: 100%;
+    margin: auto;
+    margin-top: 150px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+    z-index: 56;
+ 
+}
+
+.footer__grupo {
+    width: 100%;
+    padding: 25px ;
+}
+
+.footer__texto {
+    color: white;
+    text-align: center;
+}
+
+.footer__copyright {
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+
+/*interfaz de solicitudes */
+.containerSeguimiento {
+    min-height: 80%;
+    max-width: 100%;
+    border-radius: 3px;
+    border-color: #001064;
+    border: 1px solid;
+    padding: 1em 1em;
+}
+
+.containerSeguimiento--admin {
+    margin-left: 250px;
+}
+
+.seguimiento {
+    display: grid;
+    padding: 40px;
+    grid-template-columns: repeat(1, 1fr);
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+}  
+
+.seguimiento__cabecera {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content:space-between;
+    
+}
+
+.seguimiento__encabezado {
+    grid-column: 1 / span 3;
+}
+
+.seguimiento__descripcion {
+    padding: 20px 0;
+}
+
+.seguimiento__atributos {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 40px 0;
+    
+}
+
+.chat {
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 40px;
+}
+
+.chat__enviar {
+    width: 100px;
+    color: black;
+    padding: 10px 15px;
+    background-color: rgb(54, 236, 124);
+    border-radius: 5px;
+}
+
+.chat__entrada {
+    flex-basis: 600px;
+}
+
+.seguimiento__btnCerrar {
+    border-radius: 5px;
+    background-color: rgb(236, 54, 54);
+    width: 100px;
+    color: white;
+    padding: 10px 15px;
+}
+
+.mensajes {
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+    display: flex;
+    justify-content: space-evenly;
+    padding: 40px;
+}
+
+
+.nueva-solicitud {
+    width: 100%;
+    margin: auto;
+    min-height: 70%;
+}

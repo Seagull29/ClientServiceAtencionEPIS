@@ -1,0 +1,42 @@
+
+<section class="containerSeguimiento">
+    <header class="seguimiento">
+        <div class="seguimiento__cabecera">
+            <h2 class="seguimiento__encabezado">{{solicitud.Encabezado}}</h2>
+        </div>
+        <p class="seguimiento__descripcion">{{solicitud.Descripcion}}</p>
+        <div class="seguimiento__atributos">
+            <ul class="seguimiento__lista">
+                <li class="seguimiento__atributo">{{estudiante.CodigoUAC}}</li>
+                <li class="seguimiento__atributo">{{estudiante.Nombre}}</li>
+                <li class="seguimiento__atributo">{{estudiante.Apellidos}}</li>
+            </ul>
+            <ul class="seguimiento__lista">
+                <li class="seguimiento__atributo">{{solicitud.Fecha}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Estado}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Tipo}}</li>
+                <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
+                <li class="seguimiento__atributo">Archivo</li>
+            </ul>
+        </div>
+    </header>
+    {{#each mensajes}}
+    <main class="mensajes">
+        <span class="mensajes__fecha">{{Fecha}}</span>
+        <p class="mensajes__cuerpo">{{Cuerpo}}</p>
+        <button class="mensajes__archivo">
+            <a>Archivo</a>
+        </button>
+    </main>
+    {{/each}}
+    <form class="chat" method="post" action="/estudiante/solicitud/nuevo-mensaje" enctype="multipart/form-data">
+        <input type="hidden" name="solicitudId" value="{{solicitud.Id}}">
+        <input class="chat__archivo" type="file" name="archivo-mensaje">
+        <textarea class="chat__entrada" name="mensaje">
+
+        </textarea>
+        <button class="chat__enviar">
+            Enviar
+        </button>
+    </form>
+</section>

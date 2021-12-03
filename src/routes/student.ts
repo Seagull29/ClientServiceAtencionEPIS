@@ -1,0 +1,163 @@
+import { isLoggedIn, upload } from "@config/util";
+import express, { Router, Request, Response } from "express";
+import { Solicitud } from "@models/solicitud";
+import { Categoria } from "@models/categoria";
+import { Estudiante } from "@models/estudiante";
+import { Mensaje } from "@models/mensaje";
+import { v4 } from "uuid";
+import fs from "fs";
+import FormData from "form-data";
+import { Multimedia } from "@models/multimedia";
+import { Tipo } from "@models/tipo";
+import { promisify } from "util";
+import path from "path";
+
+const router: Router = express.Router();
+
+router.get('/', isLoggedIn, async (req: Request, res: Response) => {
+    const user: any = req.user;
+    const { code } = user;
+    const helpingQueries = await Solicitud.search(code, 'estudiante');
+    user.helpingQueries = helpingQueries;
+    res.render('students/home', {
+        user
+    });
+});
+
+router.get('/nueva-solicitud', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Categoria.list();
+    const tipos = await Tipo.list();
+    //console.log(categorias);
+    res.render('students/newRequest', {
+        user: req.user,
+        categorias,
+        tipos
+    });
+});
+
+router.post('/crear-solicitud', isLoggedIn, upload.array('archivos', 10), async (req: Request, res: Response) => {
+
+    try {
+        const { encabezado, descripcion, categoria, tipo } = req.body;
+        const files: any = req.files;
+        const user: any = req.user;
+
+        const cat = await Categoria.search(categoria, 'nombre');
+        const tip = await Tipo.search(tipo, 'nombre');
+
+        const today = new Date();
+        today.setHours(today.getHours() - 5);
+
+        // proceso 
+        const added: any = await Solicitud.add({
+            id: Date.now() + v4() + user.code.slice(0, 2),
+            encabezado,
+            descripcion,
+            estado: 'Enviado',
+            fecha: today,
+            categoria: cat[0].Id,
+            tipo: tip[0].Id,
+            estudiante: user.code
+        });
+
+
+        if (added && files.length) {
+
+            const filesToAdd = files.map(file => {
+                const formData = new FormData();
+                const fileId = file.filename.slice(0, -path.extname(file.filename).length);
+                formData.append('id', fileId);
+                formData.append('nombre', file.originalname);
+                formData.append('extension', file.mimetype);
+                formData.append('archivo', fs.readFileSync(file.path), file.filename);
+                formData.append('solicitud', added.added.id);
+                return formData;
+            });
+
+            filesToAdd.forEach(async file => {
+                const recentAdded = await Multimedia.add(file, file.getHeaders());
+            });
+            const unlinkAsync = promisify(fs.unlink);
+            files.forEach(async file => await unlinkAsync(file.path));
+        } 
+        res.redirect('/estudiante');
+    } catch (err) {
+        res.redirect('/estudiante');    
+    }
+    
+});
+
+
+
+router.get('/solicitud/detalles/:id', isLoggedIn, async (req : Request, res : Response) => {
+
+    const user : any = req.user;
+    const solicitudRequest = await Solicitud.search(req.params.id, 'id');
+    const solicitud = solicitudRequest[0];
+    
+    const estudiante = await Estudiante.search(solicitud.Estudiante, 'codigo');
+    const mensajes = await Mensaje.search(solicitud.Id, 'solicitud');
+
+    res.render('students/solicitud', {
+        user,
+        estudiante: estudiante[0],
+        solicitud,
+        mensajes
+    });
+    
+});
+
+
+
+router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req : Request, res : Response) => {
+    const { mensaje, solicitudId } = req.body;
+    const user : any = req.user;
+    try {
+        const files : any = req.files;
+        const user : any = req.user;
+
+        const today = new Date();
+        today.setHours(today.getHours() - 5);
+
+        const nuevoMensaje = await Mensaje.add({
+            id: Date.now() + v4() + user.code.slice(0, 2),
+            cuerpo: mensaje,
+            fecha: today,
+            solicitud: solicitudId,
+            estudiante: user.code
+        });
+    
+        console.log(nuevoMensaje);
+        console.log("llegue hasta aqui");
+
+        if (nuevoMensaje && files.length) {
+
+            const filesToAdd = files.map(file => {
+                const formData = new FormData();
+                const fileId = file.filename.slice(0, -path.extname(file.filename).length);
+                formData.append('id', fileId);
+                formData.append('nombre', file.originalname);
+                formData.append('extension', file.mimetype);
+                formData.append('archivo', fs.readFileSync(file.path), file.filename);
+                formData.append('mensaje', nuevoMensaje.added.id);
+                return formData;
+            });
+
+            filesToAdd.forEach(async file => {
+                const recentAdded = await Multimedia.add(file, file.getHeaders());
+            });
+            const unlinkAsync = promisify(fs.unlink);
+            files.forEach(async file => await unlinkAsync(file.path));
+        } 
+        res.redirect(`/estudiante/solicitud/detalles/${solicitudId}`);
+
+
+
+    } catch (err) {
+        res.redirect(`/estudiante/solicitud/detalles/${solicitudId}`);
+    }
+});
+
+
+
+export default router;
