@@ -16,19 +16,29 @@
                 <li class="seguimiento__atributo">{{solicitud.Estado}}</li>
                 <li class="seguimiento__atributo">{{solicitud.Tipo}}</li>
                 <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
-                <li class="seguimiento__atributo">Archivo</li>
+                {{#if solicitud.tieneArchivos}}
+                {{#each solicitud.archivos}}
+                <li class="seguimiento__atributo"><a class="" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a></li>
+                {{/each}}
+                {{/if}}
             </ul>
         </div>
     </header>
-    {{#each mensajes}}
+    {{#each archivosMensajes}}
     <main class="mensajes">
         <span class="mensajes__fecha">{{Fecha}}</span>
         <p class="mensajes__cuerpo">{{Cuerpo}}</p>
-        <button class="mensajes__archivo">
-            <a>Archivo</a>
-        </button>
+        {{#if tieneArchivos}}
+        {{#each archivos}}
+        
+        <a class="" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a>
+        
+        {{/each}}
+        {{/if}}
     </main>
     {{/each}}
+
+    {{#if estado}}
     <form class="chat" method="post" action="/estudiante/solicitud/nuevo-mensaje" enctype="multipart/form-data">
         <input type="hidden" name="solicitudId" value="{{solicitud.Id}}">
         <input class="chat__archivo" type="file" name="archivo-mensaje">
@@ -39,4 +49,5 @@
             Enviar
         </button>
     </form>
+    {{/if}}
 </section>

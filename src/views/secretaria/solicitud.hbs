@@ -1,6 +1,16 @@
 <div class="filtro-container">
+
     <div class="filtro__grupo">
-        <select class="filtro__select" name="prioridad" id="filtro-prioridad-tutoria">
+        <select class="filtro__select" name="categoria" id="filtro-categoria-secretaria">
+            <option selected disabled>Seleccione la categoria</option>
+            {{#each categorias}}
+            <option>{{Nombre}}</option>
+            {{/each}}
+        </select>
+
+    </div>
+    <div class="filtro__grupo">
+        <select class="filtro__select" name="prioridad" id="filtro-prioridad-secretaria">
             <option selected disabled>Seleccione la prioridad</option>
             {{#each prioridades}}
             <option>{{Nombre}}</option>
@@ -8,7 +18,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <select class="filtro__select" name="tipo" id="filtro-tipo-tutoria">
+        <select class="filtro__select" name="tipo" id="filtro-tipo-secretaria">
             <option selected disabled>Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>
@@ -16,7 +26,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnTutoriaEnviado">
+        <button class="filtro__boton" id="btnSecretariaEnviado">
             <span>
                 <i></i>
             </span>
@@ -24,7 +34,7 @@
         </button>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnTutoriaProceso">
+        <button class="filtro__boton" id="btnSecretariaProceso">
             <span>
                 <i></i>
             </span>
@@ -32,7 +42,7 @@
         </button>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnTutoriaAtendido">
+        <button class="filtro__boton" id="btnSecretariaAtendido">
             <span>
                 <i></i>
             </span>
@@ -41,14 +51,15 @@
     </div>
 </div>
 
+
 <section class="containerSeguimiento containerSeguimiento--admin">
     <div>
-        <a class="seguimiento__volver" href="/coorTutoria">Volver</a>
+        <a href="/secretaria">Volver</a>
     </div>
     <header class="seguimiento">
         <div class="seguimiento__cabecera">
             <h2 class="seguimiento__encabezado">{{solicitud.Encabezado}}</h2>
-            <a href="/coorTutoria/solicitud/cerrar/{{solicitud.Id}}" class="seguimiento__btnCerrar">Cerrar</a>
+            <a href="/secretaria/solicitud/cerrar/{{solicitud.Id}}" class="seguimiento__btnCerrar">Cerrar</a>
         </div>
         <p class="seguimiento__descripcion">{{solicitud.Descripcion}}</p>
         <div class="seguimiento__atributos">
@@ -64,7 +75,7 @@
                 <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
                 {{#if solicitud.tieneArchivos}}
                 {{#each solicitud.archivos}}
-                <li class="seguimiento__atributo"><a class="" target="_blank" href="/coorTutoria/descarga/{{Id}}">Archivo</a></li>
+                <li class="seguimiento__atributo"><a class="" target="_blank" href="/secretaria/descarga/{{Id}}">Archivo</a></li>
                 {{/each}}
                 {{/if}}
             </ul>
@@ -77,13 +88,13 @@
         {{#if tieneArchivos}}
         {{#each archivos}}
         
-        <a class="" target="_blank" href="/coorTutoria/descarga/{{Id}}">Archivo</a>
+        <a class="" target="_blank" href="/secretaria/descarga/{{Id}}">Archivo</a>
         
         {{/each}}
         {{/if}}
     </main>
     {{/each}}
-    <form class="chat" method="post" action="/coorTutoria/solicitud/nuevo-mensaje" enctype="multipart/form-data">
+    <form class="chat" method="post" action="/secretaria/solicitud/nuevo-mensaje" enctype="multipart/form-data">
         <input type="hidden" name="solicitudId" value="{{solicitud.Id}}">
         <input type="hidden" name="coordinacion" value="{{coordinacion}}">
         <input class="chat__archivo" type="file" name="archivo-mensaje">

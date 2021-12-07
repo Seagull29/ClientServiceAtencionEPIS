@@ -1,6 +1,6 @@
 <div class="filtro-container">
     <div class="filtro__grupo">
-        <select name="prioridad" id="filtro-prioridad-seguimiento">
+        <select class="filtro__select" name="prioridad" id="filtro-prioridad-seguimiento">
             <option selected disabled>Seleccione la prioridad</option>
             {{#each prioridades}}
             <option>{{Nombre}}</option>
@@ -8,7 +8,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <select name="tipo" id="filtro-tipo-seguimiento">
+        <select class="filtro__select" name="tipo" id="filtro-tipo-seguimiento">
             <option selected disabled>Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>
@@ -43,12 +43,12 @@
 
 <section class="containerSeguimiento containerSeguimiento--admin">
     <div>
-        <a href="/coorSeguimiento">Volver</a>
+        <a class="seguimiento__volver" href="/coorSeguimiento">Volver</a>
     </div>
     <header class="seguimiento">
         <div class="seguimiento__cabecera">
             <h2 class="seguimiento__encabezado">{{solicitud.Encabezado}}</h2>
-            <button class="seguimiento__btnCerrar">Cerrar</button>
+            <a href="/coorSeguimiento/solicitud/cerrar/{{solicitud.Id}}" class="seguimiento__btnCerrar">Cerrar</a>
         </div>
         <p class="seguimiento__descripcion">{{solicitud.Descripcion}}</p>
         <div class="seguimiento__atributos">
@@ -62,7 +62,11 @@
                 <li class="seguimiento__atributo">{{solicitud.Estado}}</li>
                 <li class="seguimiento__atributo">{{solicitud.Tipo}}</li>
                 <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
-                <li class="seguimiento__atributo">Archivo</li>
+                {{#if solicitud.tieneArchivos}}
+                {{#each solicitud.archivos}}
+                <li class="seguimiento__atributo"><a class="" target="_blank" href="/coorSeguimiento/descarga/{{Id}}">Archivo</a></li>
+                {{/each}}
+                {{/if}}
             </ul>
         </div>
     </header>
@@ -70,9 +74,13 @@
     <main class="mensajes">
         <span class="mensajes__fecha">{{Fecha}}</span>
         <p class="mensajes__cuerpo">{{Cuerpo}}</p>
-        <button class="mensajes__archivo">
-            <a>Archivo</a>
-        </button>
+        {{#if tieneArchivos}}
+        {{#each archivos}}
+        
+        <a class="" target="_blank" href="/coorSeguimiento/descarga/{{Id}}">Archivo</a>
+        
+        {{/each}}
+        {{/if}}
     </main>
     {{/each}}
     <form class="chat" method="post" action="/coorSeguimiento/solicitud/nuevo-mensaje" enctype="multipart/form-data">

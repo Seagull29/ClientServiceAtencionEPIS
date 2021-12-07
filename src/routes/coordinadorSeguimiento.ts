@@ -35,13 +35,60 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req : Request, res : Re
     const estudiante = await Estudiante.search(solicitud.Estudiante, 'codigo');
     const mensajes = await Mensaje.search(solicitud.Id, 'solicitud');
 
+    const archivoSolicitud = await Multimedia.search(solicitud.Id, 'solicitud');
+    const multimedia = await Multimedia.list();
+
+    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+
+    if (archivoSolicitud.length) {
+        solicitud.tieneArchivos = true;
+        solicitud.archivos = archivoSolicitud;
+    } else {
+        solicitud.tieneArchivos = false;
+    }
+
+    const archivosMensajes = mensajes.map(mensaje => {
+        const { Id } = mensaje;
+        const matchMultimedia = multimedia.filter(archivo => archivo.Mensaje === Id);
+        const mensajeCompleto = {
+            ...mensaje
+        };
+        if (matchMultimedia.length) {
+            mensajeCompleto.tieneArchivos = true;
+            
+            mensajeCompleto.archivos = matchMultimedia;
+            
+
+        } else {
+
+            mensajeCompleto.tieneArchivos = false;
+        }
+        return mensajeCompleto;
+    });
+
+    console.log(solicitud);
+
     res.render('coorSeguimiento/solicitud', {
         user,
         estudiante: estudiante[0],
         solicitud,
-        mensajes
+        archivosMensajes
     });
 
+    
+});
+
+
+router.get('/descarga/:id', isLoggedIn, async (req : Request, res : Response) => {
+    const { id } = req.params;
+    const pedido = await Multimedia.search(id, 'id');
+    const archivo = pedido[0];
+    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+    const nombreCompleto : string = archivo.Id.concat(path.extname(archivo.Nombre));
+    const direccion : string = `${carpetaPublica}/${nombreCompleto}`;
+    fs.writeFileSync(direccion, Buffer.from(archivo.Archivo)); 
+    const tiposAceptados = /jpeg|jpg|png|pdf/;
+    res.download(direccion);
     
 });
 
@@ -107,6 +154,26 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
         res.redirect(`/coorSeguimiento/solicitud/detalles/${solicitudId}`);
     }
 });
+
+
+router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const respuesta = await Solicitud.search(id, 'dev');
+    const solicitud = respuesta[0];
+    const actualizado = await Solicitud.update({
+        id: solicitud.Id,
+        encabezado: solicitud.Encabezado,
+        descripcion: solicitud.Descripcion,
+        fecha: solicitud.Fecha,
+        categoria: solicitud.Categoria,
+        estudiante: solicitud.Estudiante,
+        tipo: solicitud.Tipo,
+        estado: 'Atendido'
+    });
+    res.redirect('/coorSeguimiento');
+
+});
+
 
 router.get('/prioridad-filtro/:prioridad', isLoggedIn, async (req : Request, res : Response) => {
     const { prioridad } = req.params;

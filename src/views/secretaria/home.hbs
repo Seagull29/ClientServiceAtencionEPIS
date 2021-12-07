@@ -1,9 +1,8 @@
 <div class="filtro-container">
 
     <div class="filtro__grupo">
-        <select class="filtro__select" name="categoria" id="filtro-categoria">
+        <select class="filtro__select" name="categoria" id="filtro-categoria-secretaria">
             <option selected disabled>Seleccione la categoria</option>
-            <option>Todo</option>
             {{#each categorias}}
             <option>{{Nombre}}</option>
             {{/each}}
@@ -11,7 +10,7 @@
 
     </div>
     <div class="filtro__grupo">
-        <select class="filtro__select" name="prioridad" id="filtro-prioridad">
+        <select class="filtro__select" name="prioridad" id="filtro-prioridad-secretaria">
             <option selected disabled>Seleccione la prioridad</option>
             {{#each prioridades}}
             <option>{{Nombre}}</option>
@@ -19,7 +18,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <select class="filtro__select" name="tipo" id="filtro-tipo">
+        <select class="filtro__select" name="tipo" id="filtro-tipo-secretaria">
             <option selected disabled>Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>
@@ -27,7 +26,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnAdminEnviado">
+        <button class="filtro__boton" id="btnSecretariaEnviado">
             <span>
                 <i></i>
             </span>
@@ -35,7 +34,7 @@
         </button>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnAdminProceso">
+        <button class="filtro__boton" id="btnSecretariaProceso">
             <span>
                 <i></i>
             </span>
@@ -43,7 +42,7 @@
         </button>
     </div>
     <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnAdminAtendido">
+        <button class="filtro__boton" id="btnSecretariaAtendido">
             <span>
                 <i></i>
             </span>
@@ -72,7 +71,7 @@
                 <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Tipo: </span>{{Tipo}}</li>
                 <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Estado: </span>{{Estado}}</li>
             </ul>
-            <a class="solicitud__boton" href="/admin/solicitud/detalles/{{Id}}">Detalles</a>
+            <a class="solicitud__boton" href="/secretaria/solicitud/detalles/{{Id}}">Detalles</a>
         </main>
     </section>
     {{/each}}

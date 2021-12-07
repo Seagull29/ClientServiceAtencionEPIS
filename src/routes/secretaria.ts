@@ -1,53 +1,200 @@
 import express, { Request, Response, Router } from "express";
-import { isLoggedIn } from "@config/util";
+import { isLoggedIn, upload } from "@config/util";
 import { Solicitud } from "@models/solicitud";
+import { Estudiante } from "@models/estudiante";
+import { Mensaje } from "@models/mensaje";
+import { Multimedia } from "@models/multimedia";
+import { v4 } from "uuid";
+import { promisify } from "util";
 
 const router : Router = express.Router();
 
 router.get('/', isLoggedIn, async (req : Request, res : Response) => {
     const solicitudes = await Solicitud.list();
-    res.render('admins/home', {
+    res.render('secretaria/home', {
         user: req.user,
         solicitudes,
-        coordinador: 'cisco'
+        coordinador: 'secretaria'
     });
 });
 
-router.get('/consul/en-proceso', isLoggedIn, async (req : Request, res : Response) => {
+
+router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Response) => {
+
+    const user: any = req.user;
+    const solicitudRequest = await Solicitud.search(req.params.id, 'id');
+    const solicitud = solicitudRequest[0];
+
+    const estudiante = await Estudiante.search(solicitud.Estudiante, 'codigo');
+    const mensajes = await Mensaje.search(solicitud.Id, 'solicitud');
+
+
+    const archivoSolicitud = await Multimedia.search(solicitud.Id, 'solicitud');
+    const multimedia = await Multimedia.list();
+
+
+    if (archivoSolicitud.length) {
+        solicitud.tieneArchivos = true;
+        solicitud.archivos = archivoSolicitud;
+    } else {
+        solicitud.tieneArchivos = false;
+    }
+
+    const archivosMensajes = mensajes.map(mensaje => {
+        const { Id } = mensaje;
+        const matchMultimedia = multimedia.filter(archivo => archivo.Mensaje === Id);
+        const mensajeCompleto = {
+            ...mensaje
+        };
+        if (matchMultimedia.length) {
+            mensajeCompleto.tieneArchivos = true;
+            mensajeCompleto.archivos = matchMultimedia;
+        } else {
+
+            mensajeCompleto.tieneArchivos = false;
+        }
+        return mensajeCompleto;
+    });
+
+    console.log(solicitud);
+
+    res.render('secretaria/solicitud', {
+        user,
+        estudiante: estudiante[0],
+        solicitud,
+        archivosMensajes
+    });
+
+});
+
+
+router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const pedido = await Multimedia.search(id, 'id');
+    const archivo = pedido[0];
+    const carpetaPublica: string = path.join(__dirname, '../../src/public/uploads');
+    const nombreCompleto: string = archivo.Id.concat(path.extname(archivo.Nombre));
+    const direccion: string = `${carpetaPublica}/${nombreCompleto}`;
+    fs.writeFileSync(direccion, Buffer.from(archivo.Archivo));
+    const tiposAceptados = /jpeg|jpg|png|pdf/;
+    res.download(direccion);
+
+});
+
+
+router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
+    const { mensaje, solicitudId, coordinacion } = req.body;
+    const user: any = req.user;
+    try {
+        const solicitudRequest = await Solicitud.search(solicitudId, 'dev');
+        const solicitud = solicitudRequest[0];
+        const files: any = req.files;
+        const user: any = req.user;
+
+        const today = new Date();
+        today.setHours(today.getHours() - 5);
+
+        const updated: any = await Solicitud.update({
+            id: solicitud.Id,
+            encabezado: solicitud.Encabezado,
+            descripcion: solicitud.Descripcion,
+            fecha: solicitud.Fecha,
+            categoria: solicitud.Categoria,
+            estudiante: solicitud.Estudiante,
+            tipo: solicitud.Tipo,
+            estado: 'En proceso'
+        });
+
+        const nuevoMensaje = await Mensaje.add({
+            id: Date.now() + v4() + user.code.slice(0, 2),
+            cuerpo: mensaje,
+            fecha: today,
+            solicitud: solicitudId,
+            docente: 'hespetia'
+        });
+
+        console.log(updated);
+        console.log(nuevoMensaje);
+
+        if (nuevoMensaje && files.length) {
+
+            const filesToAdd = files.map(file => {
+                const formData = new FormData();
+                const fileId = file.filename.slice(0, -path.extname(file.filename).length);
+                formData.append('id', fileId);
+                formData.append('nombre', file.originalname);
+                formData.append('extension', file.mimetype);
+                formData.append('archivo', fs.readFileSync(file.path), file.filename);
+                formData.append('mensaje', nuevoMensaje.added.id);
+                return formData;
+            });
+
+            filesToAdd.forEach(async file => {
+                const recentAdded = await Multimedia.add(file, file.getHeaders());
+            });
+            const unlinkAsync = promisify(fs.unlink);
+            files.forEach(async file => await unlinkAsync(file.path));
+        }
+        res.redirect(`/secretaria/solicitud/detalles/${solicitudId}`);
+
+
+
+    } catch (err) {
+        res.redirect(`/secretaria/solicitud/detalles/${solicitudId}`);
+    }
+});
+
+router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const respuesta = await Solicitud.search(id, 'dev');
+    const solicitud = respuesta[0];
+    const actualizado = await Solicitud.update({
+        id: solicitud.Id,
+        encabezado: solicitud.Encabezado,
+        descripcion: solicitud.Descripcion,
+        fecha: solicitud.Fecha,
+        categoria: solicitud.Categoria,
+        estudiante: solicitud.Estudiante,
+        tipo: solicitud.Tipo,
+        estado: 'Atendido'
+    });
+    res.redirect('/secretaria');
+
+});
+
+router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
+    const { categoria } = req.params;
+    const solicitudes = await Solicitud.search(categoria, 'categoria');
+    res.json(solicitudes);
+});
+
+router.get('/prioridad-filtro/:prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const { prioridad } = req.params;
+    const solicitudes = await Solicitud.search(prioridad, 'prioridad');
+    res.json(solicitudes);
+});
+
+router.get('/tipo-filtro/:tipo', isLoggedIn, async (req: Request, res: Response) => {
+    const { tipo } = req.params;
+    const solicitudes = await Solicitud.search(tipo, 'tipo');
+    res.json(solicitudes);
+});
+
+router.get('/en-proceso', isLoggedIn, async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('en proceso', 'estado');
-    const enProceso = solicitudes.filter(solicitud => solicitud.Estado === 'En proceso' && solicitud.Categoria === 'Academia CISCO');
-    res.json(enProceso);
+    res.json(solicitudes);
 
 });
 
-router.get('/consul/atendido', isLoggedIn, async (req : Request, res : Response) => {
+router.get('/atendido', isLoggedIn, async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('atendido', 'estado');
-    const atentidos = solicitudes.filter(solicitud => solicitud.Estado === 'Atendido' && solicitud.Categoria === 'Academia CISCO');
-    res.json(atentidos);
+    res.json(solicitudes);
 });
 
-router.get('/consul/consulta', isLoggedIn, async (req : Request, res : Response) => {
-    const solicitudes = await Solicitud.search('consulta', 'tipo');
-    const consultas = solicitudes.filter(solicitud => solicitud.Tipo === 'Consulta' && solicitud.Categoria === 'Academia CISCO');
-    res.json(consultas);
-});
 
-router.get('/consul/queja', isLoggedIn, async (req : Request, res : Response) => {
-    const solicitudes = await Solicitud.search('queja', 'tipo');
-    const quejas = solicitudes.filter(solicitud => solicitud.Tipo === 'Queja' && solicitud.Categoria === 'Academia CISCO');
-    res.json(quejas);
-});
-
-router.get('/consul/solicitud', isLoggedIn, async (req : Request, res : Response) => {
-    const solicitudes = await Solicitud.search('solicitud', 'tipo');
-    const solis = solicitudes.filter(solicitud => solicitud.Tipo === 'Solicitud' && solicitud.Categoria === 'Academia CISCO');
-    res.json(solis);
-});
-
-router.get('/consul/enviado', isLoggedIn, async (req : Request, res : Response) => {
+router.get('/enviado', isLoggedIn, async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('enviado', 'estado');
-    const enviados = solicitudes.filter(solicitud => solicitud.Estado === 'Enviado' && solicitud.Categoria === 'Academia CISCO');
-    res.json(enviados);
+    res.json(solicitudes);
 });
 
 

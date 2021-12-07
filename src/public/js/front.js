@@ -1,6 +1,4 @@
 
-
-
 const actualizarContenedor = (solicitudes, rol) => {
     let solicitudesContainer = $('#solicitudes');
     solicitudesContainer.html('');
@@ -34,7 +32,8 @@ $(() => {
         practicas: 'coorPracticas',
         tutoria: 'coorTutoria',
         seguimiento: 'coorSeguimiento',
-        cisco: 'coorCisco'
+        cisco: 'coorCisco',
+        secretaria: 'secretaria'
     };
     // Admin
 
@@ -101,6 +100,74 @@ $(() => {
             url,
             success: (solicitudes) => {
                 actualizarContenedor(solicitudes, roles.admin);
+            }
+        });
+    });
+
+    // Secretaria
+    $('#filtro-categoria-secretaria').on('change', () => {
+        const val = $('#filtro-categoria-secretaria :selected').val();
+        const url = `/${roles.secretaria}/categoria-filtro/${val}`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
+            }
+        });
+        $('#filtro-categoria-secretaria').prop('selectedIndex', 0);
+    });
+
+    $('#filtro-tipo-secretaria').on('change', () => {
+        const val = $('#filtro-tipo-secretaria :selected').val();
+        const url = `/${roles.secretaria}/tipo-filtro/${val}`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
+            }
+        });
+        $('#filtro-categoria-secretaria').prop('selectedIndex', 0);
+    });
+
+    $('#filtro-prioridad-secretaria').on('change', () => {
+        const val = $('#filtro-prioridad-secretaria :selected').val();
+        const url = `/${roles.secretaria}/prioridad-filtro/${val}`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
+            }
+        });
+        $('#filtro-categoria-secretaria').prop('selectedIndex', 0);
+    });
+
+
+    $('#btnSecretariaEnviado').on('click', () => {
+        const url = `/${roles.secretaria}/enviado`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
+            }
+        });
+    });
+
+    $('#btnSecretariaProceso').on('click', () => {
+        const url = `/${roles.secretaria}/en-proceso`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
+            }
+        });
+    });
+
+    $('#btnSecretariaAtendido').on('click', () => {
+        const url = `/${roles.secretaria}/atendido`;
+        $.ajax({
+            url,
+            success: (solicitudes) => {
+                actualizarContenedor(solicitudes, roles.secretaria);
             }
         });
     });

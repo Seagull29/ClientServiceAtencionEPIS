@@ -112,6 +112,18 @@ passport.use(new googleStrategy({
             } else {
                 return done(null, false);
             }
+        } else if (usuario === encargados.secretaria) {
+            const coordinador = await Docente.search(usuario, 'codigo');
+            if (coordinador.length) {
+                user.rol = {
+                    secretaria: true,
+                    rol: 'secretaria'
+                }
+                user.code = usuario;
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
         }
 
     }

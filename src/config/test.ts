@@ -2,8 +2,9 @@ const axios = require("axios");
 const FormDat = require("form-data");
 const fs = require("fs");
 const path = require("path");
+
 const main = async () => {
-    const form = new FormDat();
+    /*const form = new FormDat();
     form.append('id', 'saffdafsefa');
     form.append('nombre', 'adocuemnto.pdf');
     form.append('extension', 'application/pdf');
@@ -19,9 +20,17 @@ const main = async () => {
         }
         
     });
-    console.log(response.data);
+    console.log(response.data);*/
     /*const response = await axios.get(`http://localhost:5000/api/multimedia`);
-    console.log(response.data.data[0].Archivo);*/
+    const file = Buffer.from(response.data.data[0].Archivo.data);
+    console.log(response.data.data[0]);
+    fs.writeFileSync(response.data.data[0].Nombre, file);*/
+   
+    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+    fs.readdir(carpetaPublica, (erros, files) => {
+        console.log(files);
+    }); 
+
 }
 
 main();

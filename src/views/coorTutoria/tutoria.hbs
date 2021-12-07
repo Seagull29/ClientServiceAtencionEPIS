@@ -1,6 +1,6 @@
 <div class="filtro-container">
     <div class="filtro__grupo">
-        <select name="prioridad" id="filtro-prioridad-tutoria">
+        <select class="filtro__select" name="prioridad" id="filtro-prioridad-tutoria">
             <option selected disabled>Seleccione la prioridad</option>
             {{#each prioridades}}
             <option>{{Nombre}}</option>
@@ -8,7 +8,7 @@
         </select>
     </div>
     <div class="filtro__grupo">
-        <select name="tipo" id="filtro-tipo-tutoria">
+        <select class="filtro__select" name="tipo" id="filtro-tipo-tutoria">
             <option selected disabled>Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>

@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&display=swap');
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -5,13 +8,13 @@
 
 body {
     background-color: #fefff8;
-    
+    font-family: 'Lora', serif;
+    font-size: 20px;
     background-size: 28px 28px;
     background-image:  repeating-linear-gradient(to right, #e9eaff, #e9eaff 1.4000000000000001px, #fefff8 1.4000000000000001px, #fefff8);
 }
 
 .main {
-    font-family: 'Times New Roman' Times serif;
     padding: 90px 40px 0;
     
     /*gap: 1em;
@@ -66,6 +69,26 @@ body {
     line-height: 80px;
 }
 
+/*Preguntas frecuentes*/
+.preguntas-container {
+    margin: 0 auto;
+    min-height: 80%;
+    padding: 1em 1em;
+    max-width: 100%;
+}
+
+.preguntas {
+    padding: 15px;
+    margin: 30px 0;
+    border-top: 1px solid gray;
+}
+
+
+
+.preguntas__cuerpo {
+    padding: 10px 25px;
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+}
 
 .solicitudes-container {
     margin: auto;
@@ -112,10 +135,9 @@ body {
 
 /*Barra laterial  que contiene los filtros*/
 .filtro-container {
-    padding: 20px;
+    padding: 10px;
     border: 1px solid;
-    border-color: black;
-    border-radius: 3px;
+    border-radius: 20px;
     height: 70%;
     position: fixed;
     width: 230px;
@@ -123,13 +145,41 @@ body {
     display: flex;
     flex-direction: column;
     align-items: space-evenly;
+    background-color: #283593;
 
 }
 
 .filtro__grupo {
-    margin: auto;
+    margin: auto 0;
     list-style: none;
     
+}
+
+.filtro__boton {
+    padding: 20px 40px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: white;
+    color: #283593;
+    font-size: 20px;
+    font-family: 'Lora', serif;
+    
+}
+.filtro__boton:hover {
+    transform: translate(-5px, -5px);
+}
+
+.filtro__select {
+    padding: 10px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: white;
+    color: #283593;
+    font-size: 15px;
+    font-family: 'Lora', serif;
+}
+.filtro__select:hover {
+    transform: translate(-5px, -5px);
 }
 
 /*-----------------------------------------*/
@@ -222,11 +272,16 @@ body {
     padding: 10px 15px;
     background-color: rgb(54, 236, 124);
     border-radius: 5px;
+    font-family: 'Lora', serif;
+    font-size: 20px;
 }
 
 .chat__entrada {
     flex-basis: 600px;
+    font-family: 'Lora', serif;
+    font-size: 17px;
 }
+
 
 .seguimiento__btnCerrar {
     border-radius: 5px;
@@ -234,6 +289,11 @@ body {
     width: 100px;
     color: white;
     padding: 10px 15px;
+}
+
+.seguimiento__volver {
+    text-decoration: none;
+    padding: 10px 15px; 
 }
 
 .mensajes {

@@ -1,0 +1,12 @@
+<article class="preguntas-container">
+    {{#each preguntasF}}
+    <section class="preguntas">
+        <header class="preguntas__cabecera">
+            <h3 class="preguntas__titulo">{{pregunta}}</h3>
+        </header>
+        <main class="preguntas__cuerpo">
+            <p class="preguntas__respuesta">{{respuesta}}<a href="{{enlace}}" target="_blank">{{enlace}}</a></p>
+        </main>
+    </section>
+    {{/each}}
+</article>

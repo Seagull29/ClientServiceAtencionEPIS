@@ -5,7 +5,7 @@ import { Categoria } from "@models/categoria";
 import { Estudiante } from "@models/estudiante";
 import { Mensaje } from "@models/mensaje";
 import { v4 } from "uuid";
-import fs from "fs";
+import fs, { rmSync } from "fs";
 import FormData from "form-data";
 import { Multimedia } from "@models/multimedia";
 import { Tipo } from "@models/tipo";
@@ -98,12 +98,75 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req : Request, res : Re
     const estudiante = await Estudiante.search(solicitud.Estudiante, 'codigo');
     const mensajes = await Mensaje.search(solicitud.Id, 'solicitud');
 
+    const archivoSolicitud = await Multimedia.search(solicitud.Id, 'solicitud');
+    const multimedia = await Multimedia.list();
+
+    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+
+    if (archivoSolicitud.length) {
+        solicitud.tieneArchivos = true;
+        /*const archivos = archivoSolicitud.map(archivo => {
+            const nombreCompleto = archivo.Id.concat(path.extname(archivo.Nombre));
+            archivo.abrir = nombreCompleto;
+            fs.writeFile(`${carpetaPublica}/${nombreCompleto}`, Buffer.from(archivo.Archivo), e => console.log(e));
+            return archivo;
+        });*/
+        solicitud.archivos = archivoSolicitud;
+    } else {
+        solicitud.tieneArchivos = false;
+    }
+
+    //console.log(archivoSolicitud);
+
+    const archivosMensajes = mensajes.map(mensaje => {
+        const { Id } = mensaje;
+        const matchMultimedia = multimedia.filter(archivo => archivo.Mensaje === Id);
+        //const multimedia =  Multimedia.search(Id, 'mensaje');
+        const mensajeCompleto = {
+            ...mensaje
+        };
+        if (matchMultimedia.length) {
+            mensajeCompleto.tieneArchivos = true;
+            /*
+            const archivos = matchMultimedia.map(archivo => {
+                const nombreCompleto = archivo.Id.concat(path.extname(archivo.Nombre));
+                archivo.abrir = nombreCompleto;
+                fs.writeFile(`${carpetaPublica}/${nombreCompleto}`, Buffer.from(archivo.Archivo), e => console.log(e)); 
+                return archivo;
+            });*/
+            mensajeCompleto.archivos = matchMultimedia;
+            
+
+        } else {
+
+            mensajeCompleto.tieneArchivos = false;
+        }
+        return mensajeCompleto;
+    });
+
+    let estado : boolean = solicitud.Estado === 'Atendido' ? false : true;
+
     res.render('students/solicitud', {
         user,
+        estado,
         estudiante: estudiante[0],
         solicitud,
-        mensajes
+        archivosMensajes
     });
+    
+});
+
+
+router.get('/descarga/:id', isLoggedIn, async (req : Request, res : Response) => {
+    const { id } = req.params;
+    const pedido = await Multimedia.search(id, 'id');
+    const archivo = pedido[0];
+    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+    const nombreCompleto : string = archivo.Id.concat(path.extname(archivo.Nombre));
+    const direccion : string = `${carpetaPublica}/${nombreCompleto}`;
+    fs.writeFileSync(direccion, Buffer.from(archivo.Archivo)); 
+    const tiposAceptados = /jpeg|jpg|png|pdf/;
+    res.download(direccion);
     
 });
 
