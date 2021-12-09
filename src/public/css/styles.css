@@ -178,7 +178,7 @@ body {
 
 /*Barra laterial  que contiene los filtros*/
 .filtro-container {
-    padding: 10px;
+    
     border: 1px solid;
     border-radius: 20px;
     height: 70%;
@@ -194,14 +194,19 @@ body {
 
 .filtro__grupo {
     margin: auto 0;
-    list-style: none;
-    
+    list-style: none; 
+}
+
+.filtro__boton--enlace {
+    text-decoration: none;
+    display: block;
+    text-align: center;
 }
 
 .filtro__boton {
     padding: 20px 40px;
     width: 100%;
-    border-radius: 20px;
+    border: none;
     background: #5263E2;
     color: white;
     font-size: 20px;
@@ -209,7 +214,7 @@ body {
 }
 
 .filtro__boton:hover {
-    transform: translate(-4px, -4px);
+    transform: translate(-1px, -1px);
     background: #283593;
 }
 
@@ -223,7 +228,7 @@ body {
     font-family: 'Lora', serif;
 }
 .filtro__select:hover {
-    transform: translate(-4px, -4px);
+    transform: translate(-2px, -2px);
 }
 .filtro__select:focus {
     outline: none;   
@@ -580,3 +585,82 @@ body {
     height: 325px; 
     width: 325px;
 }
+
+/* CRud */
+.crud-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+    min-height: 80%;
+    margin-left: 250px;
+    justify-content: center;
+    justify-items: center;
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+}
+
+.crud__forms {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+    width: 60%;
+}
+
+.crud__title {
+    text-align: center;
+    margin: 10px;
+}
+
+.form {
+    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 10%);
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.form__etiqueta {
+    display: block;
+    width: 100%;
+}
+
+.form__input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #283593;
+    color: #283593;
+    font-size: 20px;
+    font-family: 'Lora', serif;
+    padding: 10px 0;
+}
+.form__input:focus {
+    outline: none;
+}
+
+.form__grupo {
+    margin: 20px 0;
+}
+
+.form__buttons {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.form__button {
+    padding: 17px;
+    border: none;
+    font-size: 18px;
+    font-family: 'Lora', serif;
+    color: white;
+    background: #283593;
+    border-radius: 15px;
+}
+
+.form__button--delete {
+    background: #BB0712;
+}
+.form__button--add {
+    background: #009688;
+}
+.form__button--update {
+    background: #4d2c91;
+}
+

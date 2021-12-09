@@ -23,7 +23,12 @@ const actualizarContenedor = (solicitudes, rol) => {
                         </section>  
                     `);
     });
-}
+};
+
+const actualizarCrud = (render, rol) => {
+    let crudContainer = $('#ajax-crud');
+    crudContainer.html(render);
+};
 
 $(() => {
     
@@ -391,6 +396,84 @@ $(() => {
             url,
             success: (solicitudes) => {
                 actualizarContenedor(solicitudes, roles.seguimiento);
+            }
+        });
+    });
+
+    /*Admin crud*/
+    $('#crud-tipo').on('click', () => {
+        const url = `/${roles.admin}/crud-tipo`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-categoria').on('click', () => {
+        const url = `/${roles.admin}/crud-categoria`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-prioridad').on('click', () => {
+        const url = `/${roles.admin}/crud-prioridad`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-docente').on('click', () => {
+        const url = `/${roles.admin}/crud-docente`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-coordinacion').on('click', () => {
+        const url = `/${roles.admin}/crud-coordinacion`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-preguntafrecuente').on('click', () => {
+        const url = `/${roles.admin}/crud-preguntafrecuente`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
+            }
+        });
+    });
+
+    $('#crud-secretaria').on('click', () => {
+        const url = `/${roles.admin}/crud-secretaria`;
+        $.ajax({
+            url,
+            dataType: 'html',
+            success: (render) => {
+                actualizarCrud(render, roles.admin);
             }
         });
     });

@@ -179,6 +179,55 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 });
 
 
+router.get('/control', isLoggedIn, async (req : Request, res : Response) => {
+    res.render('admins/admin', {
+        user: req.user
+    });
+});
+
+router.get('/crud-tipo' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/tipoCrud.hbs`);
+
+});
+
+router.get('/crud-categoria' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/categoriaCrud.hbs`);
+
+});
+
+router.get('/crud-docente' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/docenteCrud.hbs`);
+
+});
+
+router.get('/crud-prioridad' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/prioridadCrud.hbs`);
+
+});
+
+router.get('/crud-coordinacion' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/coordinacionCrud.hbs`);
+
+});
+
+router.get('/crud-preguntafrecuente' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/preguntaFrecuenteCrud.hbs`);
+
+});
+
+router.get('/crud-secretaria' , isLoggedIn, async (req : Request, res : Response) => {
+    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
+    res.sendFile(`${carpetaPublica}/secretariaCrud.hbs`);
+
+});
+
+
 router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
     const { categoria } = req.params;
     if (categoria === 'Todo') {
