@@ -54,7 +54,7 @@
 
 <section class="containerSeguimiento containerSeguimiento--admin">
     <div>
-        <a href="/secretaria">Volver</a>
+        <a class="seguimiento__volver" href="/secretaria">Volver</a>
     </div>
     <header class="seguimiento">
         <div class="seguimiento__cabecera">
@@ -81,14 +81,14 @@
             </ul>
         </div>
     </header>
-    {{#each mensajes}}
+    {{#each archivosMensajes}}
     <main class="mensajes">
         <span class="mensajes__fecha">{{Fecha}}</span>
         <p class="mensajes__cuerpo">{{Cuerpo}}</p>
         {{#if tieneArchivos}}
         {{#each archivos}}
         
-        <a class="" target="_blank" href="/secretaria/descarga/{{Id}}">Archivo</a>
+        <a class="mensajes__archivo" target="_blank" href="/secretaria/descarga/{{Id}}">Archivo</a>
         
         {{/each}}
         {{/if}}

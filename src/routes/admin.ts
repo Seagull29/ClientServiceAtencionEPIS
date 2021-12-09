@@ -10,6 +10,8 @@ import { Categoria } from "@models/categoria";
 import { Tipo } from "@models/tipo";
 import { Prioridad } from "@models/prioridad";
 import path from "path";
+import FormData from "form-data";
+import fs from "fs";
 
 const router: Router = express.Router();
 
@@ -60,7 +62,6 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Resp
             mensajeCompleto.tieneArchivos = true;
 
             mensajeCompleto.archivos = matchMultimedia;
-
 
         } else {
 
@@ -148,11 +149,13 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
             const unlinkAsync = promisify(fs.unlink);
             files.forEach(async file => await unlinkAsync(file.path));
         }
-        res.redirect(`/admin/solicitud/detalles/${solicitudId}`);
-
+        setTimeout(() => {
+            res.redirect(`/admin/solicitud/detalles/${solicitudId}`);
+        }, 1500);
 
 
     } catch (err) {
+        console.log(err);
         res.redirect(`/admin/solicitud/detalles/${solicitudId}`);
     }
 });

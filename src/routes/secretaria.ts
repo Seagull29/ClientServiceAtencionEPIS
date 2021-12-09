@@ -6,14 +6,26 @@ import { Mensaje } from "@models/mensaje";
 import { Multimedia } from "@models/multimedia";
 import { v4 } from "uuid";
 import { promisify } from "util";
+import FormData from "form-data";
+import fs from "fs";
+import path from "path";
+import { Categoria } from "@models/categoria";
+import { Prioridad } from "@models/prioridad";
+import { Tipo } from "@models/tipo";
 
 const router : Router = express.Router();
 
 router.get('/', isLoggedIn, async (req : Request, res : Response) => {
     const solicitudes = await Solicitud.list();
+    const categorias = await Categoria.list();
+    const tipos = await Tipo.list();
+    const prioridades = await Prioridad.list();
     res.render('secretaria/home', {
         user: req.user,
         solicitudes,
+        categorias,
+        tipos,
+        prioridades,
         coordinador: 'secretaria'
     });
 });
@@ -114,7 +126,7 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
         });
 
         console.log(updated);
-        console.log(nuevoMensaje);
+        console.log("hola", nuevoMensaje);
 
         if (nuevoMensaje && files.length) {
 
@@ -135,11 +147,13 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
             const unlinkAsync = promisify(fs.unlink);
             files.forEach(async file => await unlinkAsync(file.path));
         }
-        res.redirect(`/secretaria/solicitud/detalles/${solicitudId}`);
-
-
+        setTimeout(() => {
+            res.redirect(`/secretaria/solicitud/detalles/${solicitudId}`);
+        }, 1500);
+        
 
     } catch (err) {
+
         res.redirect(`/secretaria/solicitud/detalles/${solicitudId}`);
     }
 });

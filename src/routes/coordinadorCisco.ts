@@ -8,6 +8,9 @@ import { Mensaje } from "@models/mensaje";
 import { v4 } from "uuid";
 import { Multimedia } from "@models/multimedia";
 import { promisify } from "util";
+import FormData from "form-data";
+import fs from "fs";
+import path from "path";
 
 const router : Router = express.Router();
 
@@ -148,7 +151,9 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
             const unlinkAsync = promisify(fs.unlink);
             files.forEach(async file => await unlinkAsync(file.path));
         } 
-        res.redirect(`/coorCisco/solicitud/detalles/${solicitudId}`);
+        setTimeout(() => {
+            res.redirect(`/coorCisco/solicitud/detalles/${solicitudId}`);
+        }, 1500);
 
 
 

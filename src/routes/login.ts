@@ -8,10 +8,39 @@ import { urlsAyuda } from '@config/util';
 const router : Router = express.Router();
 
 router.get('/', (req : Request, res : Response) => {
-    
     res.render('index');
 });
 
+router.get('/inicio', (req : Request, res : Response) => {
+    if (req.user) {
+        const user : any = req.user;
+        switch (user.rol.rol) {
+            case 'estudiante':
+                res.redirect('/estudiante');
+                break;
+            case 'practicas':
+                res.redirect('/coorPracticas');
+                break;
+            case 'tutoria':
+                res.redirect('/coorTutoria');
+                break;
+            case 'seguimiento':
+                res.redirect('/coorSeguimiento');
+                break;
+            case 'cisco':
+                res.redirect('/coorCisco');
+                break;
+            case 'admin':
+                res.redirect('/admin');
+                break;
+            case 'secretaria':
+                res.redirect('/secretaria');
+                break;
+        }
+    } else {
+        res.redirect('/');
+    }
+});
 
 router.get('/preguntas-frecuentes', async (req : Request, res : Response) => {
     const preguntas = await PreguntaFrecuente.list();

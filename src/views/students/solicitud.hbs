@@ -18,7 +18,7 @@
                 <li class="seguimiento__atributo">{{solicitud.Categoria}}</li>
                 {{#if solicitud.tieneArchivos}}
                 {{#each solicitud.archivos}}
-                <li class="seguimiento__atributo"><a class="" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a></li>
+                <li class="seguimiento__atributo"><a class="seguimiento__archivo" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a></li>
                 {{/each}}
                 {{/if}}
             </ul>
@@ -31,7 +31,7 @@
         {{#if tieneArchivos}}
         {{#each archivos}}
         
-        <a class="" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a>
+        <a class="mensajes__archivo" target="_blank" href="/estudiante/descarga/{{Id}}">Archivo</a>
         
         {{/each}}
         {{/if}}

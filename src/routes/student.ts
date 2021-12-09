@@ -5,7 +5,7 @@ import { Categoria } from "@models/categoria";
 import { Estudiante } from "@models/estudiante";
 import { Mensaje } from "@models/mensaje";
 import { v4 } from "uuid";
-import fs, { rmSync } from "fs";
+import fs from "fs";
 import FormData from "form-data";
 import { Multimedia } from "@models/multimedia";
 import { Tipo } from "@models/tipo";
@@ -212,7 +212,9 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
             const unlinkAsync = promisify(fs.unlink);
             files.forEach(async file => await unlinkAsync(file.path));
         } 
-        res.redirect(`/estudiante/solicitud/detalles/${solicitudId}`);
+        setTimeout(() => {
+            res.redirect(`/estudiante/solicitud/detalles/${solicitudId}`);
+        }, 1500);
 
 
 

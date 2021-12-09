@@ -6,8 +6,8 @@ const actualizarContenedor = (solicitudes, rol) => {
     solicitudes.forEach((solicitud, indice) => {
         solicitudesContainer.append(`
                         <section class="solicitud">
-                            <header class="solicitud_cabecera">
-                                <h3 class="solicitud__titulo"><span class="solicitud__numero">#${indice + 1} </span>${solicitud.Estudiante}</h3>
+                            <header class="solicitud__cabecera">
+                                <h3 class="solicitud__titulo"><span class="solicitud__numero">${indice + 1}° </span>${solicitud.Estudiante}</h3>
                                 <h4 class="solicitud__titulo"><span class="solicitud__encabezado">${solicitud.Encabezado}</span></h4>
                             </header>
                             <main class="solicitud__cuerpo">

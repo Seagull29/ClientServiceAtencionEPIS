@@ -8,6 +8,9 @@ import { promisify } from "util";
 import { Multimedia } from "@models/multimedia";
 import { upload } from "@config/util";import { Prioridad } from "@models/prioridad";
 import { Tipo } from "@models/tipo";
+import FormData from "form-data";
+import fs from "fs";
+import path from "path";
 
 const router : Router = express.Router();
 
@@ -145,7 +148,10 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
             const unlinkAsync = promisify(fs.unlink);
             files.forEach(async file => await unlinkAsync(file.path));
         } 
-        res.redirect(`/coorPracticas/solicitud/detalles/${solicitudId}`);
+        setTimeout(() => {
+            res.redirect(`/coorPracticas/solicitud/detalles/${solicitudId}`);
+        }, 1500);
+      
 
 
 

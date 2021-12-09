@@ -1,32 +1,38 @@
+
 <form action="/estudiante/crear-solicitud" method="post" enctype="multipart/form-data" class="nueva-solicitud">
     <div>
-        <select name="categoria">
+        <h1>Nueva Solicitud</h1>
+    </div>
+    <div class="nueva-solicitud__select-group">
+        <select name="categoria" class="nueva-solicitud__select">
             <option selected disabled>Seleccione la categoria</option>
             {{#each categorias}}
             <option>{{Nombre}}</option>
             {{/each}}
         </select>
-        <select name="tipo">
+        <select name="tipo" class="nueva-solicitud__select">
             <option selected disabled >Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>
             {{/each}}
         </select>
     </div>
-    <div>
-        <div>
-            <input type="text" name="encabezado" placeholder=" ">
-            <label for="encabezado">Encabezado:</label>
+    <div class="nueva-solicitud__inputs">
+        <div class="nueva-solicitud__grupo">
+            <label class="nueva-solicitud__etiquetas" for="encabezado">Encabezado:</label>
+            <input class="nueva-solicitud__entrada" type="text" name="encabezado" placeholder=" ">
+            
+            <span></span>
+        </div>
+        <div class="nueva-solicitud__grupo">
+            <label class="nueva-solicitud__etiquetas"  for="descripcion">Descripcion:</label>
+            <textarea class="nueva-solicitud__entrada entrada--area" name="descripcion"></textarea>
+            
             <span></span>
         </div>
         <div>
-            <textarea name="descripcion"></textarea>
-            <label for="descripcion">Descripcion:</label>
-            <span></span>
+            <input class="nueva-solicitud__entrada"  type="file" name="archivos">
         </div>
-        <div>
-            <input type="file" name="archivos">
-        </div>
-        <button>Enviar Solicitud</button>
+        <button class="nueva-solicitud__enviar">Enviar Solicitud</button>
     </div>
 </form>

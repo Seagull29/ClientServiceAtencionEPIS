@@ -12,6 +12,7 @@ import coorTutoria from "@routes/coordinadorTutoria";
 import coorCisco from "@routes/coordinadorCisco";
 import coorSeguimiento from "@routes/coordinadorSeguimiento";
 import admin from "@routes/admin";
+import secretaria from "@routes/secretaria";
 require("@config/authorization");
 const path = require("path");
 
@@ -63,6 +64,7 @@ app.use('/coorTutoria', coorTutoria);
 app.use('/coorCisco', coorCisco);
 app.use('/coorSeguimiento', coorSeguimiento);
 app.use('/admin', admin);
+app.use('/secretaria', secretaria);
 
 app.listen(app.get('port'), () => {
     console.log(`Server's running on port ${app.get('port')}`);
