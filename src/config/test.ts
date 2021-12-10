@@ -26,10 +26,10 @@ const main = async () => {
     console.log(response.data.data[0]);
     fs.writeFileSync(response.data.data[0].Nombre, file);*/
    
-    const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
+    /*const carpetaPublica : string = path.join(__dirname, '../../src/public/uploads');
     fs.readdir(carpetaPublica, (erros, files) => {
         console.log(files);
-    }); 
+    }); */
 
 }
 

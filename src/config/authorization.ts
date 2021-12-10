@@ -28,31 +28,10 @@ passport.use(new googleStrategy({
         if (hd !== dominioUac) {
             return done(null, false);
         }
-
-        const coduac: string = email.slice(0, 9).concat(email.charAt(9).toUpperCase());
+        //const coduac: string = email.slice(0, 9).concat(email.charAt(9).toUpperCase());
         const usuario: string = email.slice(0, email.length - dominioUac.length - 1);
-
-        if (typeof +coduac.slice(0, 8) === 'number') {
-            const estudiante = await Estudiante.search(coduac, 'codigo');
-
-            if (estudiante.length === 0) {
-                const { given_name, family_name } = user;
-                const added = await Estudiante.add({
-                    codigoUAC: coduac,
-                    nombre: given_name,
-                    apellidos: family_name,
-                    grado: ''
-                });
-            }
-
-            user.code = coduac;
-            user.rol = {
-                estudiante: true,
-                rol: 'estudiante'
-            };
-            console.log("Agreagado o ya estaba: ", estudiante);
-            return done(null, user);
-        } else if (usuario === encargados.practicas) {
+        console.log(usuario);
+        if (usuario === encargados.practicas) {
             const coordinador = await Docente.search(usuario, 'codigo');
             if (coordinador.length) {
                 user.rol = {
@@ -124,6 +103,26 @@ passport.use(new googleStrategy({
             } else {
                 return done(null, false);
             }
+        } else {
+            const estudiante = await Estudiante.search(usuario, 'codigo');
+
+            if (estudiante.length === 0) {
+                const { given_name, family_name } = user;
+                const added = await Estudiante.add({
+                    codigoUAC: usuario,
+                    nombre: given_name,
+                    apellidos: family_name,
+                    grado: ''
+                });
+            }
+
+            user.code = usuario;
+            user.rol = {
+                estudiante: true,
+                rol: 'estudiante'
+            };
+            console.log("Agreagado o ya estaba: ", estudiante);
+            return done(null, user);
         }
 
     }
