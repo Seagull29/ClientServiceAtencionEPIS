@@ -76,6 +76,25 @@ export class FetchData {
         
     }
 
+    deleteRequest = async ({ requestUrl, ...requestParams }) : Promise<any | null> => {
+        try {
+            const response : any = await this.#instance.delete(
+                requestUrl,
+                { data: requestParams}
+                
+            );
+            if (await this.#verifyPostRequest(response.data)) {
+                return null;
+            }
+            return response.data;
+        } catch (err) {
+            return err.message;
+            return null;
+        }   
+        
+    }
+
+
 
     #verifyGetRequest = async (res: any) : Promise<boolean> => {
         const error = res.data.error ? true : false;

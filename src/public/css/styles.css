@@ -603,6 +603,7 @@ body {
     grid-template-columns: repeat(1, 1fr);
     align-items: center;
     width: 60%;
+    
 }
 
 .crud__title {
@@ -662,5 +663,27 @@ body {
 }
 .form__button--update {
     background: #4d2c91;
+}
+
+
+.form__button--listar {
+    width: 50%;
+    margin: auto;
+}
+
+.table-data {
+    border-collapse: collapse;
+}
+
+.table__header, .table__data {
+    border-bottom: 1px solid #dddddd;
+    padding: 5px 10px;
+
+}
+
+.table__head, .table__header {
+    background-color: #283593;
+    color: white;
+    font-size: 20px;
 }
 

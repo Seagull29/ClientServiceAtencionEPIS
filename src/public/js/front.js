@@ -30,6 +30,116 @@ const actualizarCrud = (render, rol) => {
     crudContainer.html(render);
 };
 
+const listarCategoria = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Id}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Descripcion}</td>
+            <td class="table__data">${item.Coordinacion}</td>
+            <td class="table__data">${item.Prioridad}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarTipo = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Id}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Prioridad}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarSecretaria = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Identificacion}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Apellidos}</td>
+            <td class="table__data">${item.Celular}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarPrioridad = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Id}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Nivel}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarPreguntaFrecuente = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Id}</td>
+            <td class="table__data">${item.Pregunta}</td>
+            <td class="table__data">${item.Respuesta}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarDocente = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.CodigoUAC}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Apellidos}</td>
+            <td class="table__data">${item.Celular}</td>
+        </tr>`
+        );
+    });
+};
+
+const listarCoordinacion = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Id}</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Docente}</td>
+        </tr>`
+        );
+    });
+};
+
+
 $(() => {
     
     const roles = {
@@ -478,5 +588,14 @@ $(() => {
         });
     });
 
+    $('#btnListarCategoria').on('click', () => {
+        const url = `/${roles.admin}/listar-categoria`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarCategoria(data, roles.admin);
+            }
+        });
+    });
     
 })

@@ -4,7 +4,7 @@ import { links } from "@config/util";
 export class Categoria {
     
     static readonly #endpoint : string = 'categorias';
-    static #axiosInstance : any = new FetchData(links.apiDomain);
+    static #axiosInstance : FetchData = new FetchData(links.apiDomain);
 
     static search = async (query : string, filter : string) : Promise<any | null> => {
         const data = await this.#axiosInstance.getRequest({
@@ -28,6 +28,22 @@ export class Categoria {
             requestUrl: `${this.#endpoint}/`,
         });
         return data.data;
+    }
+
+    static update = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.putRequest({
+            requestUrl: `${this.#endpoint}/update`,
+            ...body
+        });
+        return data;
+    }
+
+    static delete = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.deleteRequest({
+            requestUrl: `${this.#endpoint}/delete`,
+            ...body
+        });
+        return data;
     }
 
 }

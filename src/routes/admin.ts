@@ -30,7 +30,6 @@ router.get('/', isLoggedIn, async (req: Request, res: Response) => {
     });
 });
 
-
 router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Response) => {
 
     const user: any = req.user;
@@ -81,7 +80,6 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Resp
 
 });
 
-
 router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
     const { id } = req.params;
     const pedido = await Multimedia.search(id, 'id');
@@ -94,7 +92,6 @@ router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
     res.download(direccion);
 
 });
-
 
 router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
     const { mensaje, solicitudId, coordinacion } = req.body;
@@ -160,6 +157,62 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
     }
 });
 
+router.post('/agregar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtDescripcion: descripcion,
+        txtCoordinacion: coordinacion,
+        txtPrioridad: prioridad
+    } = req.body;
+
+    let idCat = !id ? `Cat${v4().slice(0, 6)}` : id;
+    let coordCat = coordinacion ? coordinacion : null;
+    const nuevaCat = await Categoria.add({
+        id: idCat,
+        nombre,
+        descripcion,
+        coordinacion: coordCat,
+        prioridad
+    });
+
+    console.log(nuevaCat);
+    res.redirect('/admin/control');
+});
+
+router.post('/actualizar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtDescripcion: descripcion,
+        txtCoordinacion: coordinacion,
+        txtPrioridad: prioridad
+    } = req.body;
+    let coordCat = coordinacion ? coordinacion : null;
+    const nuevaCat = await Categoria.update({
+        id,
+        nombre,
+        descripcion,
+        coordinacion: coordCat,
+        prioridad
+    });
+
+    res.redirect('/admin/control');
+});
+
+router.post('/eliminar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtId : id } = req.body;
+    const eliminado = await Categoria.delete({
+        id
+    });
+    res.redirect('/admin/control');
+});
+
+router.get('/listar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Categoria.list();
+    res.json(categorias);
+});
+
 router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Response) => {
     const { id } = req.params;
     const respuesta = await Solicitud.search(id, 'dev');
@@ -178,55 +231,53 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 
 });
 
-
-router.get('/control', isLoggedIn, async (req : Request, res : Response) => {
+router.get('/control', isLoggedIn, async (req: Request, res: Response) => {
     res.render('admins/admin', {
         user: req.user
     });
 });
 
-router.get('/crud-tipo' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/tipoCrud.hbs`);
 
 });
 
-router.get('/crud-categoria' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-categoria', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/categoriaCrud.hbs`);
 
 });
 
-router.get('/crud-docente' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-docente', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/docenteCrud.hbs`);
 
 });
 
-router.get('/crud-prioridad' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-prioridad', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/prioridadCrud.hbs`);
 
 });
 
-router.get('/crud-coordinacion' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/coordinacionCrud.hbs`);
 
 });
 
-router.get('/crud-preguntafrecuente' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-preguntafrecuente', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/preguntaFrecuenteCrud.hbs`);
 
 });
 
-router.get('/crud-secretaria' , isLoggedIn, async (req : Request, res : Response) => {
+router.get('/crud-secretaria', isLoggedIn, async (req: Request, res: Response) => {
     const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
     res.sendFile(`${carpetaPublica}/secretariaCrud.hbs`);
 
 });
-
 
 router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
     const { categoria } = req.params;
@@ -237,7 +288,7 @@ router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res:
         const solicitudes = await Solicitud.search(categoria, 'categoria');
         res.json(solicitudes);
     }
-    
+
 });
 
 router.get('/prioridad-filtro/:prioridad', isLoggedIn, async (req: Request, res: Response) => {
