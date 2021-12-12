@@ -15,12 +15,35 @@ export class Docente {
         return data.data;
     }
 
+    static list = async () : Promise<any | null> => {
+        const data = await this.#axiosInstance.getRequest({
+            requestUrl: `${this.#endpoint}/`,
+        });
+        return data.data;
+    }
+
     static add = async ({ ...body }) : Promise<any | null> => {
         const data = await this.#axiosInstance.postRequest({
             requestUrl: `${this.#endpoint}/add`,
             ...body
         });
         
+        return data;
+    }
+
+    static update = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.putRequest({
+            requestUrl: `${this.#endpoint}/update`,
+            ...body
+        });
+        return data;
+    }
+
+    static delete = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.deleteRequest({
+            requestUrl: `${this.#endpoint}/delete`,
+            ...body
+        });
         return data;
     }
 

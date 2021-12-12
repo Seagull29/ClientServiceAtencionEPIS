@@ -1,10 +1,10 @@
 import { FetchData } from "@config/fetchData";
 import { links } from "@config/util";
 
-export class Tipo {
+export class Secretaria {
     
-    static readonly #endpoint : string = 'tipos';
-    static #axiosInstance : any = new FetchData(links.apiDomain);
+    static readonly #endpoint : string = 'secretarias';
+    static #axiosInstance : FetchData = new FetchData(links.apiDomain);
 
     static search = async (query : string, filter : string) : Promise<any | null> => {
         const data = await this.#axiosInstance.getRequest({

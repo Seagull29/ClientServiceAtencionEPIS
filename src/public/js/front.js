@@ -25,22 +25,18 @@ const actualizarContenedor = (solicitudes, rol) => {
     });
 };
 
-const actualizarCrud = (render, rol) => {
-    let crudContainer = $('#ajax-crud');
-    crudContainer.html(render);
-};
-
 const listarCategoria = (data, rol) => {
     let table = $('#body-table');
     table.html('');
     data.forEach((item, indice) => {
+        const coord = item.Coordinacion ? item.Coordinacion : '';
         table.append(`
         <tr class="table__row">
             <td class="table__data">${indice + 1}°</td>
             <td class="table__data">${item.Id}</td>
             <td class="table__data">${item.Nombre}</td>
             <td class="table__data">${item.Descripcion}</td>
-            <td class="table__data">${item.Coordinacion}</td>
+            <td class="table__data">${coord}</td>
             <td class="table__data">${item.Prioridad}</td>
         </tr>`
         );
@@ -510,83 +506,6 @@ $(() => {
         });
     });
 
-    /*Admin crud*/
-    $('#crud-tipo').on('click', () => {
-        const url = `/${roles.admin}/crud-tipo`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-categoria').on('click', () => {
-        const url = `/${roles.admin}/crud-categoria`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-prioridad').on('click', () => {
-        const url = `/${roles.admin}/crud-prioridad`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-docente').on('click', () => {
-        const url = `/${roles.admin}/crud-docente`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-coordinacion').on('click', () => {
-        const url = `/${roles.admin}/crud-coordinacion`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-preguntafrecuente').on('click', () => {
-        const url = `/${roles.admin}/crud-preguntafrecuente`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
-
-    $('#crud-secretaria').on('click', () => {
-        const url = `/${roles.admin}/crud-secretaria`;
-        $.ajax({
-            url,
-            dataType: 'html',
-            success: (render) => {
-                actualizarCrud(render, roles.admin);
-            }
-        });
-    });
 
     $('#btnListarCategoria').on('click', () => {
         const url = `/${roles.admin}/listar-categoria`;
@@ -594,6 +513,67 @@ $(() => {
             url,
             success: (data) => {
                 listarCategoria(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarTipo').on('click', () => {
+        const url = `/${roles.admin}/listar-tipo`;
+        $.ajax({
+            url,
+            success: (data) => {
+                console.log(data);
+                listarTipo(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarSecretaria').on('click', () => {
+        const url = `/${roles.admin}/listar-secretaria`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarSecretaria(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarPrioridad').on('click', () => {
+        const url = `/${roles.admin}/listar-prioridad`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarPrioridad(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarPreguntaFrecuente').on('click', () => {
+        const url = `/${roles.admin}/listar-preguntaFrecuente`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarPreguntaFrecuente(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarDocente').on('click', () => {
+        const url = `/${roles.admin}/listar-docente`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarDocente(data, roles.admin);
+            }
+        });
+    });
+
+    $('#btnListarCoordinacion').on('click', () => {
+        const url = `/${roles.admin}/listar-coordinacion`;
+        $.ajax({
+            url,
+            success: (data) => {
+                listarCoordinacion(data, roles.admin);
             }
         });
     });

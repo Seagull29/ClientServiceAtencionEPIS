@@ -30,4 +30,20 @@ export class PreguntaFrecuente {
         return data.data;
     }
 
+    static update = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.putRequest({
+            requestUrl: `${this.#endpoint}/update`,
+            ...body
+        });
+        return data;
+    }
+
+    static delete = async ({ ...body }) : Promise<any | null> => {
+        const data = await this.#axiosInstance.deleteRequest({
+            requestUrl: `${this.#endpoint}/delete`,
+            ...body
+        });
+        return data;
+    }
+
 }

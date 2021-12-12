@@ -33,6 +33,8 @@ export const upload = multer({
     }
 });
 
+export const admin = process.env.ADMIN;
+
 export const encargados = {
     practicas: "hespetia",
     tutoria: "ybernales",

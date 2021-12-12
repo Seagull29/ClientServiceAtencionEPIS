@@ -124,8 +124,10 @@ router.get('/logout', (req : Request, res : Response) => {
         files.forEach(file => fs.unlink(path.join(carpetaPublica, file), (err) => console.log(err)));
     });
     req.logout();   
-    req.session.destroy(() => console.log('user logged out'));
-    res.redirect('/');
+    req.session.destroy(() => {
+        res.redirect('/');
+        console.log('user logged out');
+    });
 });
 
 export default router;

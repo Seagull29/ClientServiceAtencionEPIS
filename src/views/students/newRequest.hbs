@@ -1,17 +1,17 @@
 
-<form action="/estudiante/crear-solicitud" method="post" enctype="multipart/form-data" class="nueva-solicitud">
+<form action="/estudiante/crear-solicitud" method="post" enctype="multipart/form-data" class="nueva-solicitud" id="form-nuevaSolicitud">
     <div>
         <h1>Nueva Solicitud</h1>
     </div>
     <div class="nueva-solicitud__select-group">
-        <select name="categoria" class="nueva-solicitud__select">
-            <option selected disabled>Seleccione la categoria</option>
+        <select name="categoria" id="ns-categoria" class="nueva-solicitud__select">
+            <option selected disabled value="">Seleccione la categoria</option>
             {{#each categorias}}
             <option>{{Nombre}}</option>
             {{/each}}
         </select>
-        <select name="tipo" class="nueva-solicitud__select">
-            <option selected disabled >Seleccione el tipo</option>
+        <select name="tipo" id="ns-tipo" class="nueva-solicitud__select">
+            <option selected disabled value="">Seleccione el tipo</option>
             {{#each tipos}}
             <option>{{Nombre}}</option>
             {{/each}}
@@ -20,7 +20,7 @@
     <div class="nueva-solicitud__inputs">
         <div class="nueva-solicitud__grupo">
             <label class="nueva-solicitud__etiquetas" for="encabezado">Encabezado:</label>
-            <input class="nueva-solicitud__entrada" type="text" name="encabezado" placeholder=" ">
+            <input class="nueva-solicitud__entrada" type="text" name="encabezado" id="ns-encabezado" placeholder=" ">
             
             <span></span>
         </div>
@@ -33,6 +33,8 @@
         <div>
             <input class="nueva-solicitud__entrada"  type="file" name="archivos">
         </div>
-        <button class="nueva-solicitud__enviar">Enviar Solicitud</button>
+        <button type="submit"class="nueva-solicitud__enviar">Enviar Solicitud</button>
+        <div id="error-container" class="error-container"></div>
     </div>
+    
 </form>

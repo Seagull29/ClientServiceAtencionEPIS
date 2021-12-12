@@ -1,45 +1,4 @@
-<div class="filtro-container">
-    <div class="filtro__grupo">
-        <select class="filtro__select" name="prioridad" id="filtro-prioridad-seguimiento">
-            <option selected disabled>Seleccione la prioridad</option>
-            {{#each prioridades}}
-            <option>{{Nombre}}</option>
-            {{/each}}
-        </select>
-    </div>
-    <div class="filtro__grupo">
-        <select class="filtro__select" name="tipo" id="filtro-tipo-seguimiento">
-            <option selected disabled>Seleccione el tipo</option>
-            {{#each tipos}}
-            <option>{{Nombre}}</option>
-            {{/each}}
-        </select>
-    </div>
-    <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnSeguimientoEnviado">
-            <span>
-                <i></i>
-            </span>
-            <span class="filtro__nombre">Enviado</span>
-        </button>
-    </div>
-    <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnSeguimientoProceso">
-            <span>
-                <i></i>
-            </span>
-            <span class="filtro__nombre">En proceso</span>
-        </button>
-    </div>
-    <div class="filtro__grupo">
-        <button class="filtro__boton" id="btnSeguimientoAtendido">
-            <span>
-                <i></i>
-            </span>
-            <span class="filtro__nombre">Atendido</span>
-        </button>
-    </div>
-</div>
+{{>coorSeguimientoFiltroMenu}}
 
 <div class="solicitudes-container solicitudes-container--admin" id="solicitudes">
     <input type="hidden" value="{{coordinador}}" id="txtCategoria">
@@ -52,6 +11,8 @@
         </header>
         <main class="solicitud__cuerpo">
             <ul class="solicitud__atributos">
+                <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Categoria: </span>{{Categoria}}
+                </li>
                 <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Prioridad: </span>{{Prioridad}}
                 </li>
                 <li class="solicitud__atributoGrupo"><span class="solicitud__atributo">Fecha: </span>{{Fecha}}</li>

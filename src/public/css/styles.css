@@ -180,7 +180,7 @@ body {
 .filtro-container {
     
     border: 1px solid;
-    border-radius: 20px;
+    border-radius: 5px;
     height: 70%;
     position: fixed;
     width: 230px;
@@ -197,38 +197,54 @@ body {
     list-style: none; 
 }
 
-.filtro__boton--enlace {
+.filtro__boton {
+    padding: 20px 40px;
+    width: 100%;
+    border: none;
+    /*background: #5263E2;*/
+    background: #283593;
+    border-top: 1px inset black;
+    border-bottom: 1px inset black;
+    color: white;
+    font-size: 18px;
+    font-family: 'Lora', serif;
     text-decoration: none;
     display: block;
     text-align: center;
 }
 
-.filtro__boton {
-    padding: 20px 40px;
-    width: 100%;
-    border: none;
-    background: #5263E2;
-    color: white;
-    font-size: 20px;
-    font-family: 'Lora', serif;
-}
-
 .filtro__boton:hover {
     transform: translate(-1px, -1px);
-    background: #283593;
+    background: #5263E2;
+}
+
+
+.filtro__boton--admin:hover {
+    background: #7245C2;
+}
+
+.filtro__boton--volver:hover {
+    background: #7245C2;
 }
 
 .filtro__select {
     padding: 10px;
     width: 100%;
-    border-radius: 20px;
-    background-color: white;
-    color: #283593;
-    font-size: 15px;
+    outline: none;
+    border-top: 1px inset black;
+    border-bottom: 1px inset black;
+    border-radius: 5px;
+    background-color: #283593;
+    color: white;
+    font-size: 18px;
     font-family: 'Lora', serif;
 }
 .filtro__select:hover {
     transform: translate(-2px, -2px);
+    background: #5263E2;
+}
+.filtro__select:active {
+    background: #283593;
 }
 .filtro__select:focus {
     outline: none;   
@@ -423,6 +439,7 @@ body {
     gap: 30px;
     align-items: center;
     padding: 40px;
+    margin-bottom: 20px;
 }
 
 .chat__archivo {
@@ -606,6 +623,10 @@ body {
     
 }
 
+.crud__tables {
+    width: 100%;
+}
+
 .crud__title {
     text-align: center;
     margin: 10px;
@@ -631,6 +652,10 @@ body {
     font-family: 'Lora', serif;
     padding: 10px 0;
 }
+.form__input--select {
+    outline: none;
+    border-radius: 1px;
+}
 .form__input:focus {
     outline: none;
 }
@@ -654,25 +679,41 @@ body {
     background: #283593;
     border-radius: 15px;
 }
+.form__button:hover {
+    background: #5263E2;
+}
 
 .form__button--delete {
     background: #BB0712;
 }
+.form__button--delete:hover {
+    background: #EA1A28;
+}
 .form__button--add {
     background: #009688;
 }
+.form__button--add:hover {
+    background: #00B3A2;
+}
 .form__button--update {
     background: #4d2c91;
+}
+.form__button--update:hover {
+    background: #7245C2;
 }
 
 
 .form__button--listar {
     width: 50%;
     margin: auto;
+    margin-bottom: 20px;
 }
 
 .table-data {
     border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 17px;
+    overflow: auto;
 }
 
 .table__header, .table__data {
@@ -685,5 +726,17 @@ body {
     background-color: #283593;
     color: white;
     font-size: 20px;
+}
+
+
+.error {
+    padding: 20px;
+    border-radius: 20px;
+    margin: 0 auto;
+    width: 80%;
+    color: white;
+    background: #e69603;
+    text-align: center;
+    text-shadow: 0.3px 0.3px;
 }
 

@@ -1,50 +1,72 @@
+{{>adminCrudMenu}}
 <div class="crud-container">
     <div class="crud__forms">
         <h2 class="crud__title">Categoria</h2>
-        <form class="form">
+        <form class="form" method="post" action="/admin/agregar-categoria" id="form-categoriaCrud">
             <div class="form__grupo">
                 <label class="form__etiqueta" for="encabezado">Id:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <input class="form__input" type="text" name="txtId" placeholder=" " id="txtId">
                 <span></span>
             </div>
             <div class="form__grupo">
                 <label class="form__etiqueta" for="encabezado">Nombre:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <input class="form__input" type="text" name="txtNombre" placeholder=" " id="txtNombre">
                 <span></span>
             </div>
             <div class="form__grupo">
                 <label class="form__etiqueta" for="encabezado">Descripción:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <input class="form__input" type="text" name="txtDescripcion" placeholder=" " id="txtDescripcion">
                 <span></span>
             </div>
             <div class="form__grupo">
-                <label class="form__etiqueta" for="encabezado">Coordinación:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <select class="form__input form__input--select" name="txtCoordinacion" id="txtCoordinacion">
+                    <option selected disabled value="">Seleccione la coordinación</option>
+                    {{#each coordinaciones}}
+                    <option value="{{Id}}">{{Nombre}}</option>
+                    {{/each}}
+                </select>
                 <span></span>
             </div>
             <div class="form__grupo">
-                <label class="form__etiqueta" for="encabezado">Prioridad:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <select class="form__input form__input--select" name="txtPrioridad" id="txtPrioridad">
+                    <option selected disabled value="">Seleccione la prioridad</option>
+                    {{#each prioridades}}
+                    <option value="{{Id}}">{{Nombre}}</option>
+                    {{/each}}
+                </select>
                 <span></span>
             </div>
             <div class="form__buttons">
-                <button class="form__button form__button--add">Agregar</button>
-                <button class="form__button form__button--update">Actualizar</button>
-                <button class="form__button">Listar</button>
+                <button type="submit" class="form__button form__button--add">Agregar</button>
+                <button type="submit" class="form__button form__button--update" formaction="/admin/actualizar-categoria">Actualizar</button>
             </div>
         </form>
-        <form class="form">
+        <button class="form__button form__button--listar" id="btnListarCategoria">Listar</button>
+        <div id="error-container" class="error-container"></div>
+        <form class="form" method="post" action="/admin/eliminar-categoria" id="form-eliminar">
             <div class="form__grupo">
                 <label class="form__etiqueta" for="encabezado">Id:</label>
-                <input class="form__input" type="text" name="encabezado" placeholder=" ">
+                <input class="form__input" type="text" name="txtId" placeholder=" " id="txtIdEliminar">
                 <span></span>
             </div>
-            <button class="form__button form__button--delete">Eliminar</button>
+            <button type="submit" class="form__button form__button--delete">Eliminar</button>
         </form>
     </div>
     <div class="crud__tables">
-        <table>
-
-        </table>
+        <table class="table-data">
+                <thead class="table__head">
+                    <tr class="table__row">
+                        <th class="table__header">No.</th>
+                        <th class="table__header">Id</th>
+                        <th class="table__header">Nombre</th>
+                        <th class="table__header">Descripción</th>
+                        <th class="table__header">Coordinación</th>
+                        <th class="table__header">Prioridad</th>
+                    </tr>
+                </thead>
+                <tbody class="table__body" id="body-table">
+            
+                </tbody>
+            </table>
     </div>
 </div>

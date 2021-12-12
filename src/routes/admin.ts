@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { isLoggedIn, upload } from "@config/util";
+import { isLoggedIn, upload, admin } from "@config/util";
 import { Solicitud } from "@models/solicitud";
 import { Estudiante } from "@models/estudiante";
 import { Mensaje } from "@models/mensaje";
@@ -12,6 +12,11 @@ import { Prioridad } from "@models/prioridad";
 import path from "path";
 import FormData from "form-data";
 import fs from "fs";
+import { PreguntaFrecuente } from "@models/preguntaFrecuente";
+import { Docente } from "@models/docente";
+import { Secretaria } from "@models/secretaria";
+import { Coordinacion } from "@models/coordinacion";
+
 
 const router: Router = express.Router();
 
@@ -177,7 +182,7 @@ router.post('/agregar-categoria', isLoggedIn, async (req: Request, res: Response
     });
 
     console.log(nuevaCat);
-    res.redirect('/admin/control');
+    res.redirect('/admin/crud-categoria');
 });
 
 router.post('/actualizar-categoria', isLoggedIn, async (req: Request, res: Response) => {
@@ -197,7 +202,7 @@ router.post('/actualizar-categoria', isLoggedIn, async (req: Request, res: Respo
         prioridad
     });
 
-    res.redirect('/admin/control');
+    res.redirect('/admin/crud-categoria');
 });
 
 router.post('/eliminar-categoria', isLoggedIn, async (req: Request, res: Response) => {
@@ -205,11 +210,310 @@ router.post('/eliminar-categoria', isLoggedIn, async (req: Request, res: Respons
     const eliminado = await Categoria.delete({
         id
     });
-    res.redirect('/admin/control');
+    res.redirect('/admin/crud-categoria');
+});
+
+
+router.post('/agregar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtPrioridad: prioridad
+    } = req.body;
+
+    const nuevoTipo = await Tipo.add({
+        id,
+        nombre,
+        prioridad
+    });
+
+    console.log(nuevoTipo);
+    res.redirect('/admin/crud-tipo');
+});
+
+router.post('/actualizar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtPrioridad: prioridad
+    } = req.body;
+
+    const nuevoTipo = await Tipo.update({
+        id,
+        nombre,
+        prioridad
+    });
+
+    res.redirect('/admin/crud-tipo');
+});
+
+router.post('/eliminar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtId : id } = req.body;
+    const eliminado = await Tipo.delete({
+        id
+    });
+    res.redirect('/admin/crud-tipo');
+});
+
+
+router.post('/agregar-docente', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtCodigo: codigoUAC,
+        txtNombre: nombre,
+        txtApellidos: apellidos,
+        txtCelular: celular
+    } = req.body;
+
+   
+    const nuevoDocente = await Docente.add({
+        codigoUAC,
+        nombre,
+        apellidos,
+        celular
+    });
+
+    console.log(nuevoDocente);
+    res.redirect('/admin/crud-docente');
+});
+
+router.post('/actualizar-docente', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtCodigo: codigoUAC,
+        txtNombre: nombre,
+        txtApellidos: apellidos,
+        txtCelular: celular
+    } = req.body;
+
+   
+    const nuevoDocente = await Docente.update({
+        codigoUAC,
+        nombre,
+        apellidos,
+        celular
+    });
+
+    console.log(nuevoDocente);
+    res.redirect('/admin/crud-docente');
+});
+
+router.post('/eliminar-docente', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtCodigo : codigoUAC } = req.body;
+    const eliminado = await Docente.delete({
+        codigoUAC
+    });
+    res.redirect('/admin/crud-docente');
+});
+
+
+router.post('/agregar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtIdentificacion: identificacion,
+        txtNombre: nombre,
+        txtApellidos: apellidos,
+        txtCelular: celular
+    } = req.body;
+
+    const nuevaSecretaria = await Secretaria.add({
+        identificacion,
+        nombre,
+        apellidos,
+        celular
+    });
+
+    console.log(nuevaSecretaria);
+    res.redirect('/admin/crud-secretaria');
+});
+
+router.post('/actualizar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtIdentificacion: identificacion,
+        txtNombre: nombre,
+        txtApellidos: apellidos,
+        txtCelular: celular
+    } = req.body;
+
+    const nuevaSecretaria = await Secretaria.update({
+        identificacion,
+        nombre,
+        apellidos,
+        celular
+    });
+
+    console.log(nuevaSecretaria);
+    res.redirect('/admin/crud-secretaria');
+});
+
+router.post('/eliminar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtIdentificacion : identificacion } = req.body;
+    const eliminado = await Secretaria.delete({
+        identificacion
+    });
+    res.redirect('/admin/crud-secretaria');
+});
+
+
+router.post('/agregar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtNivel: nivel,
+    } = req.body;
+
+    const nuevaPrioridad = await Prioridad.add({
+        id,
+        nombre,
+        nivel: +nivel
+    });
+
+    console.log(nuevaPrioridad);
+    res.redirect('/admin/crud-prioridad');
+});
+
+router.post('/actualizar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtNivel: nivel,
+    } = req.body;
+
+    const nuevaPrioridad = await Prioridad.update({
+        id,
+        nombre,
+        nivel: +nivel
+    });
+
+    console.log(nuevaPrioridad);
+    res.redirect('/admin/crud-prioridad');
+});
+
+router.post('/eliminar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtId : id } = req.body;
+    const eliminado = await Prioridad.delete({
+        id
+    });
+    res.redirect('/admin/crud-prioridad');
+});
+
+
+router.post('/agregar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtPregunta: pregunta,
+        txtRespuesta: respuesta
+    } = req.body;
+
+    const preguntaFrecuente = await PreguntaFrecuente.add({
+        id,
+        administrador: admin,
+        pregunta,
+        respuesta
+    });
+
+    console.log(preguntaFrecuente);
+    res.redirect('/admin/crud-preguntaFrecuente');
+});
+
+router.post('/actualizar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtPregunta: pregunta,
+        txtRespuesta: respuesta
+    } = req.body;
+
+    const preguntaFrecuente = await PreguntaFrecuente.update({
+        id,
+        administrador: admin,
+        pregunta,
+        respuesta
+    });
+
+    console.log(preguntaFrecuente);
+    res.redirect('/admin/crud-preguntaFrecuente');
+});
+
+router.post('/eliminar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtId : id } = req.body;
+    const eliminado = await PreguntaFrecuente.delete({
+        id
+    });
+    res.redirect('/admin/crud-preguntaFrecuente');
+});
+
+
+router.post('/agregar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtDocente: docente
+    } = req.body;
+
+    const nuevaCoordinacion = await Coordinacion.add({
+       id,
+       nombre,
+       docente
+    });
+
+    console.log(nuevaCoordinacion);
+    res.redirect('/admin/crud-coordinacion');
+});
+
+router.post('/actualizar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+    const {
+        txtId: id,
+        txtNombre: nombre,
+        txtDocente: docente
+    } = req.body;
+
+    const nuevaCoordinacion = await Coordinacion.update({
+       id,
+       nombre,
+       docente
+    });
+
+    console.log(nuevaCoordinacion);
+    res.redirect('/admin/crud-coordinacion');
+});
+
+router.post('/eliminar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+    const { txtId : id } = req.body;
+    const eliminado = await Coordinacion.delete({
+        id
+    });
+    res.redirect('/admin/crud-coordinacion');
 });
 
 router.get('/listar-categoria', isLoggedIn, async (req: Request, res: Response) => {
     const categorias = await Categoria.list();
+    res.json(categorias);
+});
+
+router.get('/listar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Tipo.list();
+    res.json(categorias);
+});
+
+router.get('/listar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Prioridad.list();
+    res.json(categorias);
+});
+
+router.get('/listar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Secretaria.list();
+    res.json(categorias);
+});
+
+router.get('/listar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await PreguntaFrecuente.list();
+    res.json(categorias);
+});
+
+router.get('/listar-docente', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Docente.list();
+    res.json(categorias);
+});
+
+router.get('/listar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+    const categorias = await Coordinacion.list();
     res.json(categorias);
 });
 
@@ -231,51 +535,60 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 
 });
 
-router.get('/control', isLoggedIn, async (req: Request, res: Response) => {
-    res.render('admins/admin', {
-        user: req.user
-    });
-});
 
 router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/tipoCrud.hbs`);
+    const prioridades = await Prioridad.list();
+    res.render('admins/tipoCrud', {
+        user: req.user,
+        prioridades
+    });
 
 });
 
 router.get('/crud-categoria', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/categoriaCrud.hbs`);
-
+    const prioridades = await Prioridad.list();
+    const coordinaciones = await Coordinacion.list();
+    res.render('admins/categoriaCrud', { 
+        user: req.user,
+        prioridades,
+        coordinaciones
+    });
 });
 
 router.get('/crud-docente', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/docenteCrud.hbs`);
+    res.render('admins/docenteCrud', {
+        user: req.user
+    });
 
 });
 
 router.get('/crud-prioridad', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/prioridadCrud.hbs`);
+    res.render('admins/prioridadCrud', {
+        user: req.user
+    });
 
 });
 
 router.get('/crud-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/coordinacionCrud.hbs`);
+    const docentes = await Docente.list();
+    res.render('admins/coordinacionCrud', {
+        user: req.user,
+        docentes
+    });
 
 });
 
 router.get('/crud-preguntafrecuente', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/preguntaFrecuenteCrud.hbs`);
+    res.render('admins/preguntaFrecuenteCrud', {
+        user: req.user
+    });
 
 });
 
 router.get('/crud-secretaria', isLoggedIn, async (req: Request, res: Response) => {
-    const carpetaPublica: string = path.join(__dirname, '../../src/views/admins');
-    res.sendFile(`${carpetaPublica}/secretariaCrud.hbs`);
+    res.render('admins/secretariaCrud', {
+        user: req.user
+    });
 
 });
 
