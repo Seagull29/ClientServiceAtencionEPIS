@@ -32,8 +32,13 @@
         <div id="error-container" class="error-container"></div>
         <form class="form" method="post" action="/admin/eliminar-docente" id="form-eliminar">
             <div class="form__grupo">
-                <label class="form__etiqueta" for="encabezado">CódigoUAC:</label>
-                <input class="form__input" type="text" name="txtCodigo" placeholder=" " id="txtIdEliminar">
+                <label class="form__etiqueta" for="encabezado">Eliminar</label>
+                <select class="form__input form__input--select" name="txtId" id="txtIdEliminar">
+                    <option disabled selected value="">Seleccione un id</option>
+                    {{#each identificadores}}
+                    <option>{{CodigoUAC}}</option>
+                    {{/each}}
+                </select>
                 <span></span>
             </div>
             <button type="submit"class="form__button form__button--delete">Eliminar</button>

@@ -21,6 +21,9 @@ const txtCodigo = document.getElementById('txtCodigo');
 const txtCelular = document.getElementById('txtCelular');
 const txtIdentificacion = document.getElementById('txtIdentificacion');
 const txtNivel = document.getElementById('txtNivel');
+const txtFechaI = document.getElementById('txtFechaI');
+const txtFechaF = document.getElementById('txtFechaF');
+const txtCriterio = document.getElementById('txtCriterio');
 
 
 
@@ -61,7 +64,7 @@ try {
         console.log(nuevoMensaje, mensajesAdvertencia);
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
 } catch (error) {
@@ -77,7 +80,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
 } catch (error) {
@@ -110,7 +113,7 @@ try {
 
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
 
@@ -136,7 +139,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     
     });
@@ -164,7 +167,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
     
@@ -191,7 +194,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
     
@@ -222,7 +225,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
 
     })
@@ -252,7 +255,7 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
 
     });
@@ -278,10 +281,9 @@ try {
         }
         if (mensajesAdvertencia) {
             error.preventDefault();
-            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`
+            errorContainer.innerHTML = `<p class="error">${mensajesAdvertencia}</p>`;
         }
     });
 } catch (error) {
     console.log('Formulario incorrecto');
 }
-

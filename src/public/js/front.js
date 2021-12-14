@@ -135,6 +135,19 @@ const listarCoordinacion = (data, rol) => {
     });
 };
 
+const listarReportes = (data, rol) => {
+    let table = $('#body-table');
+    table.html('');
+    data.forEach((item, indice) => {
+        table.append(`
+        <tr class="table__row">
+            <td class="table__data">${indice + 1}°</td>
+            <td class="table__data">${item.Nombre}</td>
+            <td class="table__data">${item.Cantidad}</td>
+        </tr>`
+        );
+    });
+};
 
 $(() => {
     
@@ -577,5 +590,42 @@ $(() => {
             }
         });
     });
+
+    $('#btnReportes').on('click', (error) => {
+        const fechaI = $('#txtFechaI').val();
+        const fechaF = $('#txtFechaF').val();
+        const criterio = $('#txtCriterio').val();
+        let errorContainer = $('#error-container');
+        let mensajesAdvertencia = false;
+        console.log(fechaI);
+        console.log(fechaF);
+        console.log(criterio);
+        if (!criterio) {
+            mensajesAdvertencia = 'Debe seleccionar un criterio para el filtro';
+        }
+        if (!fechaF) {
+            mensajesAdvertencia = 'Debe seleccionar una fecha de fin';
+        }
+        if (!fechaI) {
+            mensajesAdvertencia = 'Debe seleccionar una fecha de inicio';
+        }
+
+        if (mensajesAdvertencia) {
+            errorContainer.html(`<p class="error">${mensajesAdvertencia}</p>`);
+        } else {
+            const url = `/${roles.admin}/report/${fechaI}/${fechaF}/${criterio}`;
+            $.ajax({
+                url,
+                success: (data) => {
+                    listarReportes(data, roles.admin);
+                }
+            });
+        }
+        
+            
+        
+    });
+
+    
     
 })

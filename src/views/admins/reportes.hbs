@@ -1,0 +1,43 @@
+{{>adminCrudMenu}}
+<div class="crud-container">
+    <div class="reporte-entradas">
+        <h2 class="crud__title">Reportes Fecha</h2>
+        <div class="form" method="post" action="/admin/agregar-secretaria" id="form-secretariaCrud">
+            <div class="form__grupo">
+                <label class="form__etiqueta" for="encabezado">Fecha de inicio:</label>
+                <input class="form__input" type="date" name="txtCelular" placeholder=" " id="txtFechaI">
+                <span></span>
+            </div>
+            <div class="form__grupo">
+                <label class="form__etiqueta" for="encabezado">Fecha de fin:</label>
+                <input class="form__input" type="date" name="txtCelular" placeholder=" " id="txtFechaF">
+                <span></span>
+            </div>
+             <div class="form__grupo">
+                <select class="form__input form__input--select" name="txtCoordinacion" id="txtCriterio">
+                    <option selected disabled value="">Seleccione el criterio</option>
+                    {{#each criterios}}
+                    <option>{{this}}</option>
+                    {{/each}}
+                </select>
+                <span></span>
+            </div>
+        </div>
+        <button class="form__button form__button--listar" id="btnReportes">Enviar</button>
+        <div id="error-container" class="error-container"></div>
+    </div>
+    <div class="crud__tables">
+        <table class="table-data">
+                <thead class="table__head">
+                    <tr class="table__row">
+                        <th class="table__header">No.</th>
+                        <th class="table__header">Criterio</th>
+                        <th class="table__header">Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody class="table__body" id="body-table">
+                    
+                </tbody>
+        </table>
+    </div>
+</div>

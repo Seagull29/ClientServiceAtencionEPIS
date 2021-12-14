@@ -594,7 +594,7 @@ body {
     background: #303F9F;
 }
 .iniciar-sesion:hover {
-    box-shadow: -1px 1px 7px 0px rgb(0 0 0 / 75%);
+    box-shadow: -1px 1px 4px 0px rgb(0 0 0 / 75%);
     border-radius:50px;
 }
 
@@ -619,7 +619,7 @@ body {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     align-items: center;
-    width: 60%;
+    width: 70%;
     
 }
 
@@ -667,7 +667,7 @@ body {
 .form__buttons {
     display: flex;
     padding: 20px;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .form__button {
@@ -707,6 +707,11 @@ body {
     width: 50%;
     margin: auto;
     margin-bottom: 20px;
+    
+}
+
+.table__row:nth-child(even) {
+    background: #F4F5FB;
 }
 
 .table-data {
@@ -740,3 +745,15 @@ body {
     text-shadow: 0.3px 0.3px;
 }
 
+.navbar__img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+
+.reporte-entradas {
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    justify-content: center;
+}

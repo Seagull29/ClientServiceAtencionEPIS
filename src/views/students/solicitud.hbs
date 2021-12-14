@@ -39,15 +39,14 @@
     {{/each}}
 
     {{#if estado}}
-    <form class="chat" method="post" action="/estudiante/solicitud/nuevo-mensaje" enctype="multipart/form-data">
+    <form class="chat" method="post" action="/estudiante/solicitud/nuevo-mensaje" enctype="multipart/form-data" id="form-seguimientoMensaje">
         <input type="hidden" name="solicitudId" value="{{solicitud.Id}}">
         <input class="chat__archivo" type="file" name="archivo-mensaje">
-        <textarea class="chat__entrada" name="mensaje">
-
-        </textarea>
-        <button class="chat__enviar">
+        <textarea class="chat__entrada" name="mensaje" id="chat-mensaje"></textarea>
+        <button type="submit" class="chat__enviar">
             Enviar
         </button>
     </form>
+    <div id="error-container" class="error-container"></div>
     {{/if}}
 </section>

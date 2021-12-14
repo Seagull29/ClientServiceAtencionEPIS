@@ -16,6 +16,7 @@ import { PreguntaFrecuente } from "@models/preguntaFrecuente";
 import { Docente } from "@models/docente";
 import { Secretaria } from "@models/secretaria";
 import { Coordinacion } from "@models/coordinacion";
+import { Reporte } from "@models/reporte";
 
 
 const router: Router = express.Router();
@@ -538,9 +539,11 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 
 router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
     const prioridades = await Prioridad.list();
+    const identificadores = await Tipo.list();
     res.render('admins/tipoCrud', {
         user: req.user,
-        prioridades
+        prioridades,
+        identificadores
     });
 
 });
@@ -548,48 +551,68 @@ router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
 router.get('/crud-categoria', isLoggedIn, async (req: Request, res: Response) => {
     const prioridades = await Prioridad.list();
     const coordinaciones = await Coordinacion.list();
+    const identificadores = await Categoria.list();
     res.render('admins/categoriaCrud', { 
         user: req.user,
         prioridades,
-        coordinaciones
+        coordinaciones,
+        identificadores
     });
 });
 
 router.get('/crud-docente', isLoggedIn, async (req: Request, res: Response) => {
+    const identificadores = await Docente.list();
     res.render('admins/docenteCrud', {
-        user: req.user
+        user: req.user,
+        identificadores
     });
 
 });
 
 router.get('/crud-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+    const identificadores = await Prioridad.list();
     res.render('admins/prioridadCrud', {
-        user: req.user
+        user: req.user,
+        identificadores
     });
 
 });
 
 router.get('/crud-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
     const docentes = await Docente.list();
+    const identificadores = await Coordinacion.list();
     res.render('admins/coordinacionCrud', {
         user: req.user,
-        docentes
+        docentes,
+        identificadores
     });
 
 });
 
 router.get('/crud-preguntafrecuente', isLoggedIn, async (req: Request, res: Response) => {
+    const identificadores = await PreguntaFrecuente.list();
     res.render('admins/preguntaFrecuenteCrud', {
-        user: req.user
+        user: req.user,
+        identificadores
     });
 
 });
 
 router.get('/crud-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+    const identificadores = await Secretaria.list();
     res.render('admins/secretariaCrud', {
-        user: req.user
+        user: req.user,
+        identificadores
     });
 
+});
+
+router.get('/reportes', isLoggedIn, async (req: Request, res: Response) => {
+    const criterios = ['Categoria', 'Tipo'];
+    res.render('admins/reportes', {
+        user: req.user,
+        criterios
+    });
 });
 
 router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
@@ -631,6 +654,14 @@ router.get('/atendido', isLoggedIn, async (req: Request, res: Response) => {
 router.get('/enviado', isLoggedIn, async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('enviado', 'estado');
     res.json(solicitudes);
+});
+
+router.get('/report/:fechaI/:fechaF/:filtro', isLoggedIn, async (req: Request, res: Response) => {
+    const { fechaI, fechaF, filtro } = req.params;
+    const fechaInicio = new Date(fechaI);
+    const fechaFin = new Date(fechaF);
+    const data = await Reporte.report(fechaInicio, fechaFin, filtro);
+    res.json(data);
 });
 
 export default router;
