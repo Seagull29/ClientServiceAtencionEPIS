@@ -87,8 +87,6 @@ router.post('/crear-solicitud', isLoggedIn, upload.array('archivos', 10), async 
     
 });
 
-
-
 router.get('/solicitud/detalles/:id', isLoggedIn, async (req : Request, res : Response) => {
 
     const user : any = req.user;
@@ -156,7 +154,6 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req : Request, res : Re
     
 });
 
-
 router.get('/descarga/:id', isLoggedIn, async (req : Request, res : Response) => {
     const { id } = req.params;
     const pedido = await Multimedia.search(id, 'id');
@@ -169,8 +166,6 @@ router.get('/descarga/:id', isLoggedIn, async (req : Request, res : Response) =>
     res.download(direccion);
     
 });
-
-
 
 router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req : Request, res : Response) => {
     const { mensaje, solicitudId } = req.body;

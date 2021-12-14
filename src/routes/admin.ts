@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { isLoggedIn, upload, admin } from "@config/util";
+import { isLoggedIn, upload, admin, authRole, ROLES } from "@config/util";
 import { Solicitud } from "@models/solicitud";
 import { Estudiante } from "@models/estudiante";
 import { Mensaje } from "@models/mensaje";
@@ -21,7 +21,7 @@ import { Reporte } from "@models/reporte";
 
 const router: Router = express.Router();
 
-router.get('/', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.list();
     const categorias = await Categoria.list();
     const tipos = await Tipo.list();
@@ -36,7 +36,7 @@ router.get('/', isLoggedIn, async (req: Request, res: Response) => {
     });
 });
 
-router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/solicitud/detalles/:id',  isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
 
     const user: any = req.user;
     const solicitudRequest = await Solicitud.search(req.params.id, 'id');
@@ -86,7 +86,7 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Resp
 
 });
 
-router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/descarga/:id', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { id } = req.params;
     const pedido = await Multimedia.search(id, 'id');
     const archivo = pedido[0];
@@ -99,7 +99,7 @@ router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
 
 });
 
-router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
+router.post('/solicitud/nuevo-mensaje', isLoggedIn, authRole(ROLES.ADMIN), upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
     const { mensaje, solicitudId, coordinacion } = req.body;
     const user: any = req.user;
     try {
@@ -163,7 +163,7 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
     }
 });
 
-router.post('/agregar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -186,7 +186,7 @@ router.post('/agregar-categoria', isLoggedIn, async (req: Request, res: Response
     res.redirect('/admin/crud-categoria');
 });
 
-router.post('/actualizar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -206,7 +206,7 @@ router.post('/actualizar-categoria', isLoggedIn, async (req: Request, res: Respo
     res.redirect('/admin/crud-categoria');
 });
 
-router.post('/eliminar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtId : id } = req.body;
     const eliminado = await Categoria.delete({
         id
@@ -214,8 +214,7 @@ router.post('/eliminar-categoria', isLoggedIn, async (req: Request, res: Respons
     res.redirect('/admin/crud-categoria');
 });
 
-
-router.post('/agregar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -232,7 +231,7 @@ router.post('/agregar-tipo', isLoggedIn, async (req: Request, res: Response) => 
     res.redirect('/admin/crud-tipo');
 });
 
-router.post('/actualizar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -248,7 +247,7 @@ router.post('/actualizar-tipo', isLoggedIn, async (req: Request, res: Response) 
     res.redirect('/admin/crud-tipo');
 });
 
-router.post('/eliminar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtId : id } = req.body;
     const eliminado = await Tipo.delete({
         id
@@ -256,8 +255,7 @@ router.post('/eliminar-tipo', isLoggedIn, async (req: Request, res: Response) =>
     res.redirect('/admin/crud-tipo');
 });
 
-
-router.post('/agregar-docente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-docente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtCodigo: codigoUAC,
         txtNombre: nombre,
@@ -277,7 +275,7 @@ router.post('/agregar-docente', isLoggedIn, async (req: Request, res: Response) 
     res.redirect('/admin/crud-docente');
 });
 
-router.post('/actualizar-docente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-docente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtCodigo: codigoUAC,
         txtNombre: nombre,
@@ -297,7 +295,7 @@ router.post('/actualizar-docente', isLoggedIn, async (req: Request, res: Respons
     res.redirect('/admin/crud-docente');
 });
 
-router.post('/eliminar-docente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-docente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtCodigo : codigoUAC } = req.body;
     const eliminado = await Docente.delete({
         codigoUAC
@@ -305,8 +303,7 @@ router.post('/eliminar-docente', isLoggedIn, async (req: Request, res: Response)
     res.redirect('/admin/crud-docente');
 });
 
-
-router.post('/agregar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-secretaria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtIdentificacion: identificacion,
         txtNombre: nombre,
@@ -325,7 +322,7 @@ router.post('/agregar-secretaria', isLoggedIn, async (req: Request, res: Respons
     res.redirect('/admin/crud-secretaria');
 });
 
-router.post('/actualizar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-secretaria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtIdentificacion: identificacion,
         txtNombre: nombre,
@@ -344,7 +341,7 @@ router.post('/actualizar-secretaria', isLoggedIn, async (req: Request, res: Resp
     res.redirect('/admin/crud-secretaria');
 });
 
-router.post('/eliminar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-secretaria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtIdentificacion : identificacion } = req.body;
     const eliminado = await Secretaria.delete({
         identificacion
@@ -352,8 +349,7 @@ router.post('/eliminar-secretaria', isLoggedIn, async (req: Request, res: Respon
     res.redirect('/admin/crud-secretaria');
 });
 
-
-router.post('/agregar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -370,7 +366,7 @@ router.post('/agregar-prioridad', isLoggedIn, async (req: Request, res: Response
     res.redirect('/admin/crud-prioridad');
 });
 
-router.post('/actualizar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -387,7 +383,7 @@ router.post('/actualizar-prioridad', isLoggedIn, async (req: Request, res: Respo
     res.redirect('/admin/crud-prioridad');
 });
 
-router.post('/eliminar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtId : id } = req.body;
     const eliminado = await Prioridad.delete({
         id
@@ -395,8 +391,7 @@ router.post('/eliminar-prioridad', isLoggedIn, async (req: Request, res: Respons
     res.redirect('/admin/crud-prioridad');
 });
 
-
-router.post('/agregar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-preguntaFrecuente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtPregunta: pregunta,
@@ -414,7 +409,7 @@ router.post('/agregar-preguntaFrecuente', isLoggedIn, async (req: Request, res: 
     res.redirect('/admin/crud-preguntaFrecuente');
 });
 
-router.post('/actualizar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-preguntaFrecuente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtPregunta: pregunta,
@@ -432,7 +427,7 @@ router.post('/actualizar-preguntaFrecuente', isLoggedIn, async (req: Request, re
     res.redirect('/admin/crud-preguntaFrecuente');
 });
 
-router.post('/eliminar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-preguntaFrecuente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtId : id } = req.body;
     const eliminado = await PreguntaFrecuente.delete({
         id
@@ -441,7 +436,7 @@ router.post('/eliminar-preguntaFrecuente', isLoggedIn, async (req: Request, res:
 });
 
 
-router.post('/agregar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/agregar-coordinacion', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -458,7 +453,7 @@ router.post('/agregar-coordinacion', isLoggedIn, async (req: Request, res: Respo
     res.redirect('/admin/crud-coordinacion');
 });
 
-router.post('/actualizar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/actualizar-coordinacion', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const {
         txtId: id,
         txtNombre: nombre,
@@ -475,7 +470,7 @@ router.post('/actualizar-coordinacion', isLoggedIn, async (req: Request, res: Re
     res.redirect('/admin/crud-coordinacion');
 });
 
-router.post('/eliminar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+router.post('/eliminar-coordinacion', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { txtId : id } = req.body;
     const eliminado = await Coordinacion.delete({
         id
@@ -483,42 +478,42 @@ router.post('/eliminar-coordinacion', isLoggedIn, async (req: Request, res: Resp
     res.redirect('/admin/crud-coordinacion');
 });
 
-router.get('/listar-categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Categoria.list();
     res.json(categorias);
 });
 
-router.get('/listar-tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Tipo.list();
     res.json(categorias);
 });
 
-router.get('/listar-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Prioridad.list();
     res.json(categorias);
 });
 
-router.get('/listar-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-secretaria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Secretaria.list();
     res.json(categorias);
 });
 
-router.get('/listar-preguntaFrecuente', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-preguntaFrecuente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await PreguntaFrecuente.list();
     res.json(categorias);
 });
 
-router.get('/listar-docente', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-docente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Docente.list();
     res.json(categorias);
 });
 
-router.get('/listar-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/listar-coordinacion', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const categorias = await Coordinacion.list();
     res.json(categorias);
 });
 
-router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/solicitud/cerrar/:id', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { id } = req.params;
     const respuesta = await Solicitud.search(id, 'dev');
     const solicitud = respuesta[0];
@@ -536,8 +531,7 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 
 });
 
-
-router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const prioridades = await Prioridad.list();
     const identificadores = await Tipo.list();
     res.render('admins/tipoCrud', {
@@ -548,7 +542,7 @@ router.get('/crud-tipo', isLoggedIn, async (req: Request, res: Response) => {
 
 });
 
-router.get('/crud-categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const prioridades = await Prioridad.list();
     const coordinaciones = await Coordinacion.list();
     const identificadores = await Categoria.list();
@@ -560,7 +554,7 @@ router.get('/crud-categoria', isLoggedIn, async (req: Request, res: Response) =>
     });
 });
 
-router.get('/crud-docente', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-docente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const identificadores = await Docente.list();
     res.render('admins/docenteCrud', {
         user: req.user,
@@ -569,7 +563,7 @@ router.get('/crud-docente', isLoggedIn, async (req: Request, res: Response) => {
 
 });
 
-router.get('/crud-prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const identificadores = await Prioridad.list();
     res.render('admins/prioridadCrud', {
         user: req.user,
@@ -578,7 +572,7 @@ router.get('/crud-prioridad', isLoggedIn, async (req: Request, res: Response) =>
 
 });
 
-router.get('/crud-coordinacion', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-coordinacion', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const docentes = await Docente.list();
     const identificadores = await Coordinacion.list();
     res.render('admins/coordinacionCrud', {
@@ -589,7 +583,7 @@ router.get('/crud-coordinacion', isLoggedIn, async (req: Request, res: Response)
 
 });
 
-router.get('/crud-preguntafrecuente', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-preguntafrecuente', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const identificadores = await PreguntaFrecuente.list();
     res.render('admins/preguntaFrecuenteCrud', {
         user: req.user,
@@ -598,7 +592,7 @@ router.get('/crud-preguntafrecuente', isLoggedIn, async (req: Request, res: Resp
 
 });
 
-router.get('/crud-secretaria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/crud-secretaria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const identificadores = await Secretaria.list();
     res.render('admins/secretariaCrud', {
         user: req.user,
@@ -607,7 +601,7 @@ router.get('/crud-secretaria', isLoggedIn, async (req: Request, res: Response) =
 
 });
 
-router.get('/reportes', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/reportes', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const criterios = ['Categoria', 'Tipo'];
     res.render('admins/reportes', {
         user: req.user,
@@ -615,7 +609,7 @@ router.get('/reportes', isLoggedIn, async (req: Request, res: Response) => {
     });
 });
 
-router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/categoria-filtro/:categoria', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { categoria } = req.params;
     if (categoria === 'Todo') {
         const todo = await Solicitud.list();
@@ -627,36 +621,35 @@ router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res:
 
 });
 
-router.get('/prioridad-filtro/:prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/prioridad-filtro/:prioridad', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { prioridad } = req.params;
     const solicitudes = await Solicitud.search(prioridad, 'prioridad');
     res.json(solicitudes);
 });
 
-router.get('/tipo-filtro/:tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/tipo-filtro/:tipo', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { tipo } = req.params;
     const solicitudes = await Solicitud.search(tipo, 'tipo');
     res.json(solicitudes);
 });
 
-router.get('/en-proceso', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/en-proceso', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('en proceso', 'estado');
     res.json(solicitudes);
 
 });
 
-router.get('/atendido', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/atendido', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('atendido', 'estado');
     res.json(solicitudes);
 });
 
-
-router.get('/enviado', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/enviado', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('enviado', 'estado');
     res.json(solicitudes);
 });
 
-router.get('/report/:fechaI/:fechaF/:filtro', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/report/:fechaI/:fechaF/:filtro', isLoggedIn, authRole(ROLES.ADMIN), async (req: Request, res: Response) => {
     const { fechaI, fechaF, filtro } = req.params;
     const fechaInicio = new Date(fechaI);
     const fechaFin = new Date(fechaF);

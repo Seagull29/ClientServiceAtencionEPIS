@@ -4,8 +4,35 @@ import path from "path";
 import { v4 } from "uuid";
 import * as dotenv from "dotenv";
 import { Session } from "express-session";
+import { nextTick } from "process";
 
 dotenv.config();
+
+export const ROLES = {
+    ADMIN: 'admin',
+    ESTUDENT: 'estudiante', 
+    CPRACTICAS: 'practicas',
+    CCISCO: 'cisco',
+    CTUTORIA: 'tutoria',
+    CSEGUIMIENTO: 'seguimiento',
+    SECRETARIA: 'secretaria'
+};
+
+export const authRole = (role : string) => {
+    return (req : Request, res : Response, next : NextFunction) => {
+        const user : any = req.user;
+        if (user.code === '018100264a') {
+            next();
+            return;
+        }
+        if(user.rol.rol !== role) {
+            res.sendStatus(401);
+            return;
+        }
+        
+        next();
+    } 
+};
 
 export const isLoggedIn = (req : Request, res : Response, next : NextFunction) => {
     req.user ? next() : res.sendStatus(401);

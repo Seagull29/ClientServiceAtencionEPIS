@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from "express";
-import { isLoggedIn, upload } from "@config/util";
+import { authRole, isLoggedIn, ROLES, upload } from "@config/util";
 import { Solicitud } from "@models/solicitud";
 import { Estudiante } from "@models/estudiante";
 import { Mensaje } from "@models/mensaje";
@@ -15,7 +15,7 @@ import { Tipo } from "@models/tipo";
 
 const router : Router = express.Router();
 
-router.get('/', isLoggedIn, async (req : Request, res : Response) => {
+router.get('/', isLoggedIn, authRole(ROLES.SECRETARIA), async (req : Request, res : Response) => {
     const solicitudes = await Solicitud.list();
     const categorias = await Categoria.list();
     const tipos = await Tipo.list();
@@ -30,8 +30,7 @@ router.get('/', isLoggedIn, async (req : Request, res : Response) => {
     });
 });
 
-
-router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/solicitud/detalles/:id', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
 
     const user: any = req.user;
     const solicitudRequest = await Solicitud.search(req.params.id, 'id');
@@ -79,8 +78,7 @@ router.get('/solicitud/detalles/:id', isLoggedIn, async (req: Request, res: Resp
 
 });
 
-
-router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/descarga/:id', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const { id } = req.params;
     const pedido = await Multimedia.search(id, 'id');
     const archivo = pedido[0];
@@ -93,8 +91,7 @@ router.get('/descarga/:id', isLoggedIn, async (req: Request, res: Response) => {
 
 });
 
-
-router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
+router.post('/solicitud/nuevo-mensaje', isLoggedIn, authRole(ROLES.SECRETARIA), upload.array('archivo-mensaje', 5), async (req: Request, res: Response) => {
     const { mensaje, solicitudId, coordinacion } = req.body;
     const user: any = req.user;
     try {
@@ -158,7 +155,7 @@ router.post('/solicitud/nuevo-mensaje', isLoggedIn, upload.array('archivo-mensaj
     }
 });
 
-router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/solicitud/cerrar/:id', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const { id } = req.params;
     const respuesta = await Solicitud.search(id, 'dev');
     const solicitud = respuesta[0];
@@ -176,37 +173,36 @@ router.get('/solicitud/cerrar/:id', isLoggedIn, async (req: Request, res: Respon
 
 });
 
-router.get('/categoria-filtro/:categoria', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/categoria-filtro/:categoria', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const { categoria } = req.params;
     const solicitudes = await Solicitud.search(categoria, 'categoria');
     res.json(solicitudes);
 });
 
-router.get('/prioridad-filtro/:prioridad', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/prioridad-filtro/:prioridad', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const { prioridad } = req.params;
     const solicitudes = await Solicitud.search(prioridad, 'prioridad');
     res.json(solicitudes);
 });
 
-router.get('/tipo-filtro/:tipo', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/tipo-filtro/:tipo', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const { tipo } = req.params;
     const solicitudes = await Solicitud.search(tipo, 'tipo');
     res.json(solicitudes);
 });
 
-router.get('/en-proceso', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/en-proceso', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('en proceso', 'estado');
     res.json(solicitudes);
 
 });
 
-router.get('/atendido', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/atendido', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('atendido', 'estado');
     res.json(solicitudes);
 });
 
-
-router.get('/enviado', isLoggedIn, async (req: Request, res: Response) => {
+router.get('/enviado', isLoggedIn, authRole(ROLES.SECRETARIA), async (req: Request, res: Response) => {
     const solicitudes = await Solicitud.search('enviado', 'estado');
     res.json(solicitudes);
 });
